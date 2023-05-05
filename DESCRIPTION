@@ -1,0 +1,20 @@
+Package: ssbrain
+Type: Package
+Title: Takes Brain Screenshots Using CIFTI And Border Files
+Version: 0.1.0
+Author: NAthan L. Anderson
+Maintainer: Nathan L. Andereson <NLAnderson9@gmail.com>
+Description: This package allows you to provide CIFTI (dscalar/dlabel/dconn) and/or border files to take screenshots of brain surfaces, similar to what you would be able to produce in Connectome Workbench.
+License: None
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+Imports: 
+    dplyr,
+    gifti,
+    grDevices,
+    magick,
+    rgl,
+    tidyr,
+    viridisLite,
+    xml2
