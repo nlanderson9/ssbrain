@@ -1,3 +1,40 @@
+#' @title Set a Dlabel
+#'
+#' @description This function sets a dlabel data file on the surface of the brain
+#'
+#' @param dlabel_filename A string with the full filepath to a dlabel file
+#' @param labels A single label, either an integer corresponding to the label number in the file (e.g. 5) or the name in the file (e.g. "LANG"). Can also be a vector of integers/names if multiple labels should be displayed. If omitted, all labels in the file will be plotted.
+#' @param colors A list of colors the same length as \code{labels}; colors can be R color names (e.g. "red"), hex codes (e.g. "#FF0000"), or RGB triples (e.g. c(255,0,0)). If omitted, the default colors of the file will be used.
+#'
+#' @import grDevices
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Here, all labels will be plotted and the file's colorscheme will be used
+#' my_brain = ss_surf(surf="fsaverage6") +
+#'   ss_dlabel(dlabel_filename = "/path/to/my/datafile.dlabel.nii")
+#'
+#' # Here, only labels 1 and 5 from the file will be used, and they are colored "red" and "green"
+#' my_brain = ss_surf(surf="fsaverage6")
+#'
+#' my_brain_new = my_brain +
+#'   ss_dlabel(dlabel_filename = "/path/to/my/datafile.dlabel.nii",
+#'              labels = c(1,5),
+#'              colors = list("red", "green"))
+#'
+#' # Here, labels 8 through 10 will be plotted, with different
+#' # color specifications used for each
+#' my_brain = ss_surf(surf="fsaverage6") +
+#'   ss_dlabel(dlabel_filename = "/path/to/my/datafile.dlabel.nii",
+#'   labels = 8:10,
+#'   colors = list("#FF00FF", c(212,118,97), "palegreen"))
+#' }
+#'
+#' @details
+#' Note: Adding multiple \code{ss_dlabel} items to the same object will cause overlapping brain maps, with the most recently-added on top.
+
 ss_dlabel = function(dlabel_filename,
                   labels=NULL,
                   colors=NULL) {
@@ -44,9 +81,36 @@ ss_dlabel = function(dlabel_filename,
   return(output)
 }
 
+#' @title Check if Dlabel
+#'
+#' @description This function checks if an object is of the class \code{ssdlabel}.
+#'
+#' @param x The object to check
+#'
+#' @return TRUE or FALSE
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' new_dlabel = ss_dlabel(dlabel_filename = "/path/to/my/datafile.dlabel.nii")
+#' is.dlabel(new_dlabel)
+#' }
+
 is.dlabel = function(x) {
   inherits(x, "dlabel")
 }
+
+#' @title (Internal) Set a Dlabel
+#'
+#' @description The internal function that calculates the result for \code{\link[ssbrain]{ss_dlabel}}
+#'
+#' @param obj1 The existing \code{ssbrain} object
+#' @param obj2 The new \code{ssdlabel} object to add
+#'
+#' @import grDevices
+#' @import xml2
+#' @import gplots
 
 add_dlabel = function(obj1, obj2) {
   dlabel_filename = obj2$dlabel_filename

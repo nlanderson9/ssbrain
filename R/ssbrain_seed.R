@@ -1,3 +1,48 @@
+#' @title Set a Seed
+#'
+#' @description This function sets a seed (based on a vertex row number) and then creates a map from a corresponding dconn file containing a functional connectivity matrix.
+#'
+#' @param dconn_filename A string with the full filepath to a dconn file
+#' @param seed_value The number of the seed (row number, not vertex number)
+#' @param colorbar A string containing the name of a colorbar to use (same names as Connectome Workbench)
+#' @param thresh The option above which to hide data. Defaults to 0.2.
+#' @param colorrange The range in which to spread the \code{colorbar}'s colors. Defaults to c(0.2, 0.6)
+#' @param show_seed_sphere Whether or not to draw a sphere where the seed is (TRUE) or not (FALSE). Defaults to TRUE.
+#' @param seed_sphere_size If show_seed_sphere is TRUE, the radius of the sphere. Defaults to 2.
+#' @param seed_sphere_color If show_seed_sphere is TRUE, the color of the sphere. Defaults to "white".
+#' @param seed_data (Optional argument) Rather than passing a dconn file, you can directly pass in an R matrix containing the functional connectivity data. This can save time if you want to draw multiple seeds from the same dconn matrix. This overrides \code{dconne_filename}.
+#' @param palette (Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar}.
+#'
+#' @import grDevices
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' my_brain = ss_surf(surf="fsaverage6") +
+#'   ss_seed(dconn_filename = "/path/to/my/datafile.dconn.nii", seed_value = 31272)
+#'
+#' my_brain = ss_surf(surf="fsaverage6")
+#'
+#' my_brain_new = my_brain +
+#'   ss_dscalar(dconn_filename = "/path/to/my/datafile.dconn.nii",
+#'              seed_value = 2213,
+#'              colorbar = "TURBO",
+#'              thresh = 0.3,
+#'              colorrange = c(0.3, 0.8),
+#'              seed_sphere_size = 4,
+#'              seed_sphere_color = "red")
+#'
+#' # Warning: this may take a while (especially for fsaverage7),
+#' # and will likely require a lot of memory!
+#' dconn_data = importCifti(cifti_name = "/path/to/my/datafile.dconn.nii", data_only = TRUE)
+#' my_brain = ss_surf(surf="fsaverage6") +
+#'   ss_seed(seed_data = dconn_data, seed_value = 31272)
+#' }
+#'
+#' @details
+#' Note: Adding multiple \code{ss_seed} items to the same object will cause overlapping brain maps, with the most recently-added on top.
+
 ss_seed = function(dconn_filename,
                 seed_value,
                 colorbar="JET256",
@@ -187,10 +232,32 @@ CIVIDIS")
   return(output)
 }
 
+#' @title Check if Dconn
+#'
+#' @description This function checks if an object is of the class \code{ssdconn}.
+#'
+#' @param x The object to check
+#'
+#' @return TRUE or FALSE
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' new_dconn = ss_seed(dconn_filename = "/path/to/my/datafile.dconn.nii", seed_value = 2213)
+#' is.dconn(new_dconn)
+#' }
+
 is.dconn = function(x) {
   inherits(x, "dconn")
 }
 
+#' @title (Internal) Set a Seed
+#'
+#' @description The internal function that calculates the result for \code{\link[ssbrain]{ss_seed}}
+#'
+#' @param obj1 The existing \code{ssbrain} object
+#' @param obj2 The new \code{ssdconn} object to add
 
 add_dconn = function(obj1, obj2) {
   dconn_filename = obj2$dconn_filename

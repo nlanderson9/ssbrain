@@ -1,6 +1,25 @@
+#' @title Create a Color Code
+#'
+#' @description Create a color HEX code from an RGB triple in a vector
+#'
+#' @param x A vector with three RGB values
+#'
+#' @import grDevices
+
 rgb_fun1 = function(x) {
-  rgb(x[1], x[2], x[3], 1, maxColorValue = 255)
+  rgb(x[1], x[2], x[3], 255, maxColorValue = 255)
 }
+
+#' @title Create Color Maps
+#'
+#' @description Creates the necessary outputs for colormaps used by ss_dscalar and ss_seed
+#'
+#' @param colorbar_name A string with the name of the color bar
+#' @param pos_list The list of positive color values to create the palette
+#' @param neg_list The list of negative color values to create the palette
+#'
+#' @import grDevices
+#' @import viridisLite
 
 createOutputList = function(colorbar_name, pos_list, neg_list) {
 
@@ -29,7 +48,15 @@ createOutputList = function(colorbar_name, pos_list, neg_list) {
   return(list(neg_low=neg_low, neg_high=neg_high, pos_low=pos_low, pos_high=pos_high, neg_palette=neg_palette, pos_palette=pos_palette))
 }
 
-
+#' @title Generate Color Bar
+#'
+#' @description Given a name or color palette(s), generate the necessary information to use them in brain maps
+#'
+#' @param colorbar_name A string with the name of the color bar
+#' @param neg_colorpalette (Optional argument) A custom color palette created by colorRampPalette, to be used for negative values
+#' @param pos_colorpalette (Optional argument) A custom color palette created by colorRampPalette, to be used for positive values
+#'
+#' @import grDevices
 
 colorbarGenerator = function(colorbar_name, neg_colorpalette, pos_colorpalette) {
   if (!missing(colorbar_name)) {

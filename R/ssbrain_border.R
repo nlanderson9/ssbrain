@@ -1,3 +1,53 @@
+#' @title Set a Border
+#'
+#' @description This function sets a border data file on the surface of the brain
+#'
+#' @param border_filename A string with the full filepath to a border file
+#' @param hemisphere The hemisphere of the border file, either "left" or "right
+#' @param borders A single border, either an integer corresponding to the border number in the file (e.g. 5) or the name in the file (e.g. "LANG"). Can also be a vector of integers/names if multiple borders should be displayed. If omitted, all borders in the file will be plotted.
+#' @param border_width The width of the borders to be plotted. Defaults to 5.
+#' @param border_colors A list of colors the same length as \code{borders}; colors can be R color names (e.g. "red"), hex codes (e.g. "#FF0000"), or RGB triples (e.g. c(255,0,0)). If omitted, the default colors of the file will be used.
+#' @param offset Whether the border should be slightly raised up (offset) above the brain (TRUE) or not (FALSE). Defaults to TRUE.
+#'
+#' @import grDevices
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Here, all borders will be plotted and the file's colorscheme will be used
+#' my_brain = ss_surf(surf="fsaverage6") +
+#'   ss_border(border_filename = "/path/to/my/datafile_lh.border", hemisphere = "left")
+#'
+#' # Here, only borders 1 and 5 from the file will be used, and they are colored "red" and "green"
+#' my_brain = ss_surf(surf="fsaverage6")
+#'
+#' my_brain_new = my_brain +
+#'   ss_border(border_filename = "/path/to/my/datafile_lh.border",
+#'             hemisphere = "left",
+#'             borders = c(1,5),
+#'             border_colors = list("red", "green"))
+#'
+#' # Here, labels 8 through 10 will be plotted, with different
+#' # color specifications used for each
+#' my_brain = ss_surf(surf="fsaverage6") +
+#'   ss_border(border_filename = "/path/to/my/datafile_lh.border",
+#'             hemisphere = "left",
+#'             borders = 8:10,
+#'             border_colors = list("#FF00FF", c(212,118,97), "palegreen"))
+#'
+#' # Here, three borders are plotted by name, and all are black
+#' my_brain = ss_surf(surf="fsaverage6") +
+#'   ss_border(border_filename = "/path/to/my/datafile_lh.border",
+#'             hemisphere = "left",
+#'             borders = c("LANG", "VIS", "AUD"),
+#'             border_colors = "black")
+#' }
+#'
+#' @details
+#' Note: Adding multiple \code{ss_border} items to the same object will cause overlapping brain maps, with the most recently-added on top.
+
+
 ss_border = function(border_filename,
                   hemisphere,
                   borders=NULL,
@@ -59,9 +109,35 @@ ss_border = function(border_filename,
   return(output)
 }
 
+#' @title Check if Border
+#'
+#' @description This function checks if an object is of the class \code{ssborder}.
+#'
+#' @param x The object to check
+#'
+#' @return TRUE or FALSE
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' new_border = ss_border(border_filename = "/path/to/my/datafile.dlabel.nii", hemisphere = "left")
+#' is.border(new_border)
+#' }
+
 is.border = function(x) {
   inherits(x, "border")
 }
+
+#' @title (Internal) Set a Border
+#'
+#' @description The internal function that calculates the result for \code{\link[ssbrain]{ss_border}}
+#'
+#' @param obj1 The existing \code{ssbrain} object
+#' @param obj2 The new \code{ssborder} object to add
+#'
+#' @import grDevices
+#' @import xml2
 
 add_border = function(obj1, obj2) {
   border_filename = obj2$border_filename
@@ -71,7 +147,7 @@ add_border = function(obj1, obj2) {
   border_colors = obj2$border_colors
   offset = obj2$offset
 
-  if (offset & is.null(brain$surf_info$border_vertices[[hemisphere]])) {
+  if (offset & is.null(obj1$surf_info$border_vertices[[hemisphere]])) {
     cat("\nWarning for `border`: Currently, border offset is only supported with standard fsaverage6/7 meshes. Borders will be set to non-offset.\n")
     offset = FALSE
   }
@@ -149,9 +225,9 @@ add_border = function(obj1, obj2) {
       vertex_matrix = vertex_matrix + 1 # border files use vertices, not row numbers
 
       if (offset) {
-        border_vertices = apply(vertex_matrix, 2, function(x) as.matrix(c(rowMeans(brain$surf_info$border_vertices[[hemisphere]][,x]),1)))
+        border_vertices = apply(vertex_matrix, 2, function(x) as.matrix(c(rowMeans(obj1$surf_info$border_vertices[[hemisphere]][,x]),1)))
       } else {
-        border_vertices = apply(vertex_matrix, 2, function(x) as.matrix(c(rowMeans(brain$surf_info[[hemisphere]]$vertices[,x][1:3,]),1)))
+        border_vertices = apply(vertex_matrix, 2, function(x) as.matrix(c(rowMeans(obj1$surf_info[[hemisphere]]$vertices[,x][1:3,]),1)))
       }
 
 

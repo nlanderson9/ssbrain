@@ -1,3 +1,12 @@
+#' @title Check data bins
+#'
+#' @description Check to see which bin contains the value
+#'
+#' @param x The levels (bins) of the output of the \code{cut} function
+#' @param y The value to check
+#'
+#' @return TRUE or FALSE
+
 checkBin = function(x, y) {
   bin_bounds = strsplit(as.character(x[1]),split=",")[[1]]
   bin_bound1 = as.numeric(gsub("\\(", "", bin_bounds[1]))
@@ -9,6 +18,39 @@ checkBin = function(x, y) {
   }
 }
 
+#' @title Set a Dscalar
+#'
+#' @description This function sets a dscalar data file on the surface of the brain
+#'
+#' @param dscalar_filename A string with the full filepath to a dscalar file
+#' @param colorbar A string containing the name of a colorbar to use (same names as Connectome Workbench)
+#' @param show Whether to show positive data, negative data, or all data. Options are "all", "pos", or "neg". Defaults to "all".
+#' @param pos_thresh The threshold below which to hide positive data. Defaults to 1.
+#' @param neg_thresh The option above which to hide negative data. Defaults to -1.
+#' @param pos_colorrange The positive range in which to spread the \code{colorbar}'s colors. Defaults to c(1,3)
+#' @param neg_colorrange The negative range in which to spread the \code{colorbar}'s colors. Defaults to c(-1,-3)
+#' @param pos_palette (Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for positive colors.
+#' @param neg_palette (Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for negative colors.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' my_brain = ss_surf(surf="fsaverage6") +
+#'   ss_dscalar(dscalar_filename = "/path/to/my/datafile.dscalar.nii")
+#'
+#' my_brain = ss_surf(surf="fsaverage6")
+#'
+#' my_brain_new = my_brain +
+#'   ss_dscalar(dscalar_filename = "/path/to/my/datafile.dscalar.nii",
+#'              colorbar = "ROY-BIG-BL",
+#'              show= "pos",
+#'              pos_thresh = 10,
+#'              pos_colorrange = c(10,50))
+#' }
+#'
+#' @details
+#' Note: Adding multiple \code{ss_dscalar} items to the same object will cause overlapping brain maps, with the most recently-added on top.
 
 ss_dscalar = function(dscalar_filename,
                    colorbar="FSL",
@@ -179,10 +221,32 @@ CIVIDIS")
   return(output)
 }
 
+#' @title Check if Dscalar
+#'
+#' @description This function checks if an object is of the class \code{ssdscalar}.
+#'
+#' @param x The object to check
+#'
+#' @return TRUE or FALSE
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' new_dscalar = ss_dscalar(dscalar_filename = "/path/to/my/datafile.dscalar.nii")
+#' is.dscalar(new_dscalar)
+#' }
+
 is.dscalar = function(x) {
   inherits(x, "dscalar")
 }
 
+#' @title (Internal) Set a Dscalar
+#'
+#' @description The internal function that calculates the result for \code{\link[ssbrain]{ss_dscalar}}
+#'
+#' @param obj1 The existing \code{ssbrain} object
+#' @param obj2 The new \code{ssdscalar} object to add
 
 add_dscalar = function(obj1, obj2){
   dscalar_filename = obj2$dscalar_filename
