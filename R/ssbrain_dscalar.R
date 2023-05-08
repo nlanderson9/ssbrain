@@ -193,6 +193,14 @@ CIVIDIS")
     stop("ERROR in `ss_dscalar`: The `neg_colorrange` argument must be two numbers <= 0 (e.g. `c(-1, -3)`)")
   }
 
+  if (pos_colorrange[1] > pos_colorrange[2]) {
+    pos_colorrange = c(pos_colorrange[2], pos_colorrange[1])
+  }
+
+  if (neg_colorrange[1] > neg_colorrange[2]) {
+    neg_colorrange = c(neg_colorrange[2], neg_colorrange[1])
+  }
+
   if (!missing(pos_palette)) {
     if (!is.function(pos_palette)) {
       stop("ERROR in `dscalar: The `pos_palette` argument must be a palette function created by colorRampPalette().")
@@ -389,7 +397,7 @@ add_dscalar = function(obj1, obj2){
     num_neg_lowcolors = 0
     num_neg_highcolors = 0
   } else {
-    num_negcolors = high_neg_bin - low_neg_bin + 1
+    num_negcolors = low_neg_bin - high_neg_bin + 1
     num_neg_lowcolors = high_neg_bin - 1
     num_neg_highcolors = prop_neg_data - low_neg_bin
   }
