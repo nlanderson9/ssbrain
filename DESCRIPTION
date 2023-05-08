@@ -1,9 +1,9 @@
 Package: ssbrain
 Type: Package
-Title: Takes Brain Screenshots Using CIFTI And Border Files
+Title: Take Brain Screenshots Using CIFTI And Border Files
 Version: 0.1.0
-Author: NAthan L. Anderson
-Maintainer: Nathan L. Andereson <NLAnderson9@gmail.com>
+Author: Nathan L. Anderson
+Maintainer: Nathan L. Anderson <NLAnderson9@gmail.com>
 Description: This package allows you to provide CIFTI (dscalar/dlabel/dconn) and/or border files to take screenshots of brain surfaces, similar to what you would be able to produce in Connectome Workbench.
 License: MIT + file LICENSE
 Encoding: UTF-8
