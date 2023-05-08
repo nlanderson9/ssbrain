@@ -158,7 +158,7 @@ Now we can put this all together. Let's say you have 10 subjects, and each has t
 subjects = c("subject1", "subject2", "subject3", "subject4", "subject5", "subject6", "subject7", "subject8", "subject9", "subject10")
 task_map_names = c("task1", "task2")
 border_numbers = c(2,5)
-views = list(c("lateral", "orbitofrontal), c("lateral", "inferior_temporal"), c("medial", "orbitofrontal")
+views = list(c("lateral", "orbitofrontal"), c("lateral", "inferior_temporal"), c("medial", "orbitofrontal")
 
 for (s in 1:length(subjects)) {
   subject = subjects[s]
