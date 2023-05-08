@@ -6,6 +6,8 @@
 #' @param obj2 The new \code{ssbrain} object to add
 #'
 #' @return A new \code{ssbrain} object with information from both previous objects.
+#'
+#' @export
 
 `+.ssbrain` = function(obj1, obj2) {
   if (is.dscalar(obj2)) output = add_dscalar(obj1, obj2)
