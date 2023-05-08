@@ -228,16 +228,10 @@ captureBrain = function(brain,
   # rsvg_png(paste0(filename,".svg"), filename, width=pixwidth, height=pixheight)
 
   if (crop) {
-    if (requireNamespace("magick", quietly = TRUE)) {
-      img = magick::image_read(filename)
-      img = magick::image_trim(img)
-      img = magick::image_border(img, color="white", geometry = paste(cropmargin,"x",cropmargin))
-      magick::image_write(image=img, path = filename)
-    } else {
-      stop("For `crop = TRUE`, you must have the `magick` package installed and loaded. Please install/load the `magick` package and try again:
-           install.packages('magick')
-           library(magick)")
-    }
+    img = magick::image_read(filename)
+    img = magick::image_trim(img)
+    img = magick::image_border(img, color="white", geometry = paste(cropmargin,"x",cropmargin))
+    magick::image_write(image=img, path = filename)
   }
 }
 

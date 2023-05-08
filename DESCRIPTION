@@ -14,11 +14,10 @@ Imports:
     gifti,
     gplots,
     grDevices,
+    magick,
     rgl,
     tidyr,
     viridisLite,
     xml2
-Suggests:
-    magick
 Depends: 
-    R (>= 2.10)
+    R (>= 4.1.1)
