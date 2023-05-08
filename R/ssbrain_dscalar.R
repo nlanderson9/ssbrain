@@ -389,7 +389,7 @@ add_dscalar = function(obj1, obj2){
     num_neg_lowcolors = 0
     num_neg_highcolors = 0
   } else {
-    num_negcolors = low_neg_bin - high_neg_bin + 1
+    num_negcolors = high_neg_bin - low_neg_bin + 1
     num_neg_lowcolors = high_neg_bin - 1
     num_neg_highcolors = prop_neg_data - low_neg_bin
   }
