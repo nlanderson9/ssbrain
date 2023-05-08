@@ -155,7 +155,8 @@ closeBrainViewers()
 Now we can put this all together. Let's say you have 10 subjects, and each has two task activity maps. You have a pair of border files that you want to overlay on each task activity map, one-at-a-time. You want to capture each brain in 3 different views. If you were using Connectome Workbench, this would mean setting (and screenshotting) 10 x 2 x 2 x 3 = 120 different brain views. With `ssbrain`, all you need is:
 
 ``` r 
-subjects = c("subject1", "subject2", "subject3", "subject4", "subject5", "subject6", "subject7", "subject8", "subject9", "subject10")
+subjects = c("subject1", "subject2", "subject3", "subject4", "subject5",
+             "subject6", "subject7", "subject8", "subject9", "subject10")
 task_map_names = c("task1", "task2")
 border_numbers = c(2,5)
 views = list(c("lateral", "orbitofrontal"), c("lateral", "inferior_temporal"), c("medial", "orbitofrontal")
@@ -179,7 +180,8 @@ for (s in 1:length(subjects)) {
         border_brain = border_brain + 
           ss_view(side = view_side, rotation = view_rotation) # remember, ss_view overwrites previous views, so it's fine to keep updating the same object
         
-        captureBrain(border_brain, hemisphere = "left", filename = paste0("/my_output_directory/",subject,"_",task_map,"_",border,"_",view_side,"_",view_rotation,".png"))
+        captureBrain(border_brain, hemisphere = "left",
+                     filename = paste0("/my_output_directory/",subject,"_",task_map,"_",border,"_",view_side,"_",view_rotation,".png"))
       }
     }
   }
