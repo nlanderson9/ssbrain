@@ -34,7 +34,12 @@ Each brain starts with a surface mesh - you can specify `fsaverage6`, `fsaverage
 
 ``` r
 my_brain = ss_surf(surf = "fsaverage6")
+
+my_brain = ss_surf(surfL = "my_custom_surface_lh.surf.gii", surfR = "my_custom_surface_rh.surf.gii")
 ```
+
+(You only need to provide the surface for the hemisphere that you want to display; choosing `fsaverage6`/`fsaverage7` automatically sets the correct meshes for both hemispheres)
+
 
 Brains are built by adding function calls together (very similar to the syntax of `ggplot`) - this can be done all-at-once, or in multiple steps:
 
