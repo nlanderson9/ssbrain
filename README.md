@@ -30,6 +30,8 @@ ss_border()
 ss_view()
 ```
 
+## Starting Your Brain
+
 Each brain starts with a surface mesh - you can specify `fsaverage6`, `fsaverage7`, or provide a path to your own left/right hemisphere meshes.
 
 ``` r
@@ -71,7 +73,9 @@ my_brain = ss_surf(surf = "fsaverage6") +
 ```
 
 Adding items that overlap will layer them on top of each other on the brain. Each item is added in the order provided (i.e. the last items will appear on top, layed above the previous items). So, in the example above, the `task_activity2` dscalar will appear on top of the `regions` label file, which will appear on top of the `task_activity1` dscalar (borders are always on top of all other filetypes).
-  
+
+## Adding Layers
+
 There are four primary functions that add data on top of a surface mesh:
 
 1. `ss_dscalar`
@@ -115,7 +119,7 @@ my_brain = ss_surf(surf = "fsaverage6") +
 ```
 will ONLY give you an inferior temporal view of the brain, as the orbitofrontal view was overwritten.
 
-
+## Viewing and Capturing
 
 Once you have built the brain you want, you can choose to either view or screenshot it.
 
@@ -145,5 +149,7 @@ Once you're finished looking at brains, you can either manually close the window
 ``` r
 closeBrainViewers()
 ```
+
+## Example
 
 
