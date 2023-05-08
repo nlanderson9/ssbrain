@@ -177,11 +177,13 @@ for (s in 1:length(subjects)) {
       for (v in 1:length(views)) {
         view_side = views[[v]][1]
         view_rotation = views[[v]][2]
+        # remember, ss_view overwrites previous views, so it's fine to keep updating the same object
         border_brain = border_brain + 
-          ss_view(side = view_side, rotation = view_rotation) # remember, ss_view overwrites previous views, so it's fine to keep updating the same object
+          ss_view(side = view_side, rotation = view_rotation) 
         
         captureBrain(border_brain, hemisphere = "left",
-                     filename = paste0("/my_output_directory/",subject,"_",task_map,"_",border,"_",view_side,"_",view_rotation,".png"))
+                     filename = paste0("/my_output_directory/",subject,"_",task_map,
+                                       "_",border,"_",view_side,"_",view_rotation,".png"))
       }
     }
   }
