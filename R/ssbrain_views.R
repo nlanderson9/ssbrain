@@ -1,3 +1,17 @@
+#' @title List Available Rotations
+#'
+#' @description This function lists the pre-set rotations available in the \code{ssbrain} package for use with the \code{\link[ssbrain]{ss_view}} function.
+#'
+#' @export
+
+listRotations = function() {
+  cat("Available rotations are:\n
+orbitofrontal
+inferior_temporal")
+}
+
+
+
 #' @title Set a Viewpoint
 #'
 #' @description This function sets the view of the brain in the viewer window. It determines if a lateral or medial view is used, and the x/y/z axis rotation of the brain.

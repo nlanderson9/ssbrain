@@ -1,3 +1,53 @@
+#' @title List Available Colorbars
+#'
+#' @description This function lists the colorbars available in the \code{ssbrain} package for use with the \code{\link[ssbrain]{ss_dscalar}} and \code{\link[ssbrain]{ss_seed}} functions.
+#'
+#' @export
+
+listColorbars = function() {
+  cat("Available colorbars are:\nROY-BIG-BL
+videen_style
+Gray_Interp_Positive
+PSYCH-FIXED
+RBGYR20
+RBGYR20P
+RYGBR4_positive
+RGRBR_mirror90_pos
+Orange-Yellow
+POS_NEG_ZERO
+red-yellow
+blue-lightblue
+FSL
+power_surf
+black-red
+black-green
+black-blue
+black-red-positive
+black-green-positive
+black-blue-positive
+blue-black-green
+blue-black-red
+red-black-green
+fsl_red
+fsl_green
+fsl_blue
+fsl_yellow
+RedWhiteBlue
+cool-warm
+spectral
+RY-BC-BL
+magma   [workbench version]
+JET256
+TURBO
+VIRIDIS
+INFERNO
+MAGMA   [viridis version]
+PLASMA
+ROCKET
+MAKO
+CIVIDIS")
+}
+
 #' @title Create a Color Code
 #'
 #' @description Create a color HEX code from an RGB triple in a vector
