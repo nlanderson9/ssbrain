@@ -183,6 +183,10 @@ add_border = function(obj1, obj2) {
     borders = 1:length(border_data)
   }
 
+  if (length(borders) > 1 & length(colors) == 1 & !is.null(colors)) {
+    colors = rep(colors, length(borders))
+  }
+
   if (is.null(colors)) {
     color_list = c()
     for (i in 1:length(border_data)) {
