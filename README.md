@@ -145,6 +145,25 @@ my_brain = ss_surf(surf = "fsaverage6") +
 captureBrain(my_brain, hemisphere = "left", filename = "my_brain_image.png")
 ```
 
+Normally, `ssbrain` will open a single viewer window, and any new brains that you want to show or capture will overwrite the brain in that window. If you want to open a second window (for example, to view two brains at once) you can use `openNewBrainViewer()`:
+
+``` r
+my_brain1 = ss_surf(surf="fsaverage6") +
+  ss_dscalar(dscalar_filename = "/path/to/my_file1.dscalar.nii")
+
+my_brain2 = ss_surf(surf="fsaverage6") +
+  ss_dscalar(dscalar_filename = "/path/to/my_file2.dscalar.nii")
+
+# To show my_brain1, then replace it with my_brain2:
+showBrain(my_brain1, hemisphere = "left")
+showBrain(my_brain2, hemisphere = "left")
+
+# To show my_brain1, then to open my_brain2 in a second window:
+showBrain(my_brain1, hemisphere = "left")
+openNewBrainViewer()
+showBrain(my_brain2, hemisphere = "left")
+```
+
 Once you're finished looking at brains, you can either manually close the window(s), or use the following command to close all existing brain windows:
 ``` r
 closeBrainViewers()
