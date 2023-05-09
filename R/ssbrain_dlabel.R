@@ -121,10 +121,20 @@ add_dlabel = function(obj1, obj2) {
   r_verts = obj1$surf_info$right$num_verts
   total_verts = sum(l_verts, r_verts)
 
-  for (c in 1:length(label_colors)) {
-    color = label_colors[c]
-    if (!is.character(color) & !is.null(color)) {
-      label_colors[c] = rgb(color[1], color[2], color[3], 255, maxColorValue = 255)
+  if (length(label_colors) == 1 & !is.vector(label_colors[1])) {
+    if (!is.character(label_colors) & !is.null(label_colors)) {
+      label_colors = rgb(label_colors[1], label_colors[2], label_colors[3], 255, maxColorValue = 255)
+    } else if (is.character(label_colors) & ! grepl("^#.*", label_colors)) {
+      label_colors = col2hex(label_colors)
+    }
+  } else {
+    for (c in 1:length(label_colors)) {
+      color = label_colors[[c]]
+      if (!is.character(color) & !is.null(color)) {
+        label_colors[[c]] = rgb(color[1], color[2], color[3], 255, maxColorValue = 255)
+      } else if (is.character(color) & ! grepl("^#.*", color)) {
+        label_colors[[c]] = col2hex(color)
+      }
     }
   }
 
@@ -176,11 +186,6 @@ add_dlabel = function(obj1, obj2) {
         this_color = label_colors[[i]]
       } else {
         this_color = label_colors
-      }
-      if (is.numeric(this_color)) {
-        this_color = rgb(this_color[1], this_color[2], this_color[3], 255, maxColorValue = 255)
-      } else if (is.character(this_color) & ! grepl("^#*", this_color)) {
-        this_color = col2hex(this_color)
       }
       colors[indices] = this_color
     }

@@ -152,10 +152,20 @@ add_border = function(obj1, obj2) {
     offset = FALSE
   }
 
-  for (c in 1:length(colors)) {
-    border_color = colors[c]
-    if (!is.character(border_color) & !is.null(border_color)) {
-      colors[c] = rgb(border_color[1], border_color[2], border_color[3], 255, maxColorValue = 255)
+  if (length(colors) == 1 & !is.vector(colors[1])) {
+    if (!is.character(colors) & !is.null(colors)) {
+      colors = rgb(colors[1], colors[2], colors[3], 255, maxColorValue = 255)
+    } else if (is.character(colors) & ! grepl("^#.*", colors)) {
+      colors = col2hex(colors)
+    }
+  } else {
+    for (c in 1:length(colors)) {
+      color = colors[[c]]
+      if (!is.character(color) & !is.null(color)) {
+        colors[[c]] = rgb(color[1], color[2], color[3], 255, maxColorValue = 255)
+      } else if (is.character(color) & ! grepl("^#.*", color)) {
+        colors[[c]] = col2hex(color)
+      }
     }
   }
 
