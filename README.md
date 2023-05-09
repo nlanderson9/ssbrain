@@ -80,7 +80,7 @@ There are four primary functions that add data on top of a surface mesh:
 
 1. `ss_dscalar`
 
-This uses a dscalar file (`.dscalar.nii`) to add an activation map to the brain. You can use its arguments to adjust things like the color palette, threshold ranges, etc. Use the command `?ss_dscalar` in R to see all of the arguments, their explanations, and examples.
+This uses a dscalar file (`.dscalar.nii`) to add an activation map to the brain. You can use its arguments to adjust things like the color palette, threshold ranges, etc. Use the command `?ss_dscalar` in R to see all of the arguments, their explanations, and examples. Available colorbars can be accessed using `listColorbars()`.
 
 2. `ss_dlabel`
 
@@ -88,7 +88,7 @@ This uses a dlabel file (`.dlabel.nii`) to add a label map to the brain. You can
 
 3. `ss_seed`
 
-This uses a symmetrical dconn file (`.dconn.nii`) to add a connectivity map to the brain. You can use its arguments to adjust things like the color palette, threshold ranges, etc. Use the command `?ss_seed` in R to see all of the arguments, their explanations, and examples.
+This uses a symmetrical dconn file (`.dconn.nii`) to add a connectivity map to the brain. You can use its arguments to adjust things like the color palette, threshold ranges, etc. Use the command `?ss_seed` in R to see all of the arguments, their explanations, and examples. Available colorbars can be accessed using `listColorbars()`.
 
 4. `ss_border`
 
@@ -107,7 +107,7 @@ my_brain = ss_surf(surf = "fsaverage6") +
   ss_view(side = "lateral", rotation = c(30,90,90)
 ```
 
-You can use one of the pre-programmed views, or set your x/y/z rotation angles like you would in Workbench. See `?ss_view` for options.
+You can use one of the pre-programmed views, or set your x/y/z rotation angles like you would in Workbench.  Available rotations can be accessed using `listRotations()`; see `?ss_view` for other options.
 
 Note: Unlike the other `ss_*` builder functions, `ss_view` instances do NOT stack, but rather overwrite. So
 
