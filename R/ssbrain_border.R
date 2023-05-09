@@ -26,7 +26,7 @@
 #'   ss_border(filename = "/path/to/my/datafile_lh.border",
 #'             hemisphere = "left",
 #'             borders = c(1,5),
-#'             border_colors = list("red", "green"))
+#'             colors = list("red", "green"))
 #'
 #' # Here, labels 8 through 10 will be plotted, with different
 #' # color specifications used for each
@@ -34,14 +34,14 @@
 #'   ss_border(filename = "/path/to/my/datafile_lh.border",
 #'             hemisphere = "left",
 #'             borders = 8:10,
-#'             border_colors = list("#FF00FF", c(212,118,97), "palegreen"))
+#'             colors = list("#FF00FF", c(212,118,97), "palegreen"))
 #'
 #' # Here, three borders are plotted by name, and all are black
 #' my_brain = ss_surf(surf="fsaverage6") +
 #'   ss_border(filename = "/path/to/my/datafile_lh.border",
 #'             hemisphere = "left",
 #'             borders = c("LANG", "VIS", "AUD"),
-#'             border_colors = "black")
+#'             colors = "black")
 #' }
 #'
 #' @details
@@ -52,7 +52,7 @@ ss_border = function(filename,
                   hemisphere,
                   borders=NULL,
                   width=5,
-                  border_colors=NULL,
+                  colors=NULL,
                   offset = TRUE) {
 
   if (missing(filename)) {
@@ -85,7 +85,7 @@ ss_border = function(filename,
     stop("ERROR in `ss_border`: The argument `width` must be a positive number.")
   }
 
-  for (border_color in border_colors) {
+  for (border_color in colors) {
     if (is.character(border_color)) {
       if (!tryCatch(is.matrix(col2rgb(border_color)),error=function(e) FALSE)) {
         stop("ERROR in `ss_border`: The argument `border_color` must be a valid color string (R color-name or HEX value) or RBG color triple (e.g. `c(255,255,255)`).")
@@ -103,7 +103,7 @@ ss_border = function(filename,
                 hemisphere = hemisphere,
                 borders = borders,
                 width = width,
-                border_colors = border_colors,
+                colors = colors,
                 offset = offset)
   class(output) = c("ssbrain", "border")
   return(output)
@@ -144,7 +144,7 @@ add_border = function(obj1, obj2) {
   hemisphere = obj2$hemisphere
   borders = obj2$borders
   width = obj2$width
-  border_colors = obj2$border_colors
+  colors = obj2$colors
   offset = obj2$offset
 
   if (offset & is.null(obj1$surf_info$border_vertices[[hemisphere]])) {
@@ -152,15 +152,15 @@ add_border = function(obj1, obj2) {
     offset = FALSE
   }
 
-  for (c in 1:length(border_colors)) {
-    border_color = border_colors[c]
+  for (c in 1:length(colors)) {
+    border_color = colors[c]
     if (!is.character(border_color) & !is.null(border_color)) {
-      border_colors[c] = rgb(border_color[1], border_color[2], border_color[3], 255, maxColorValue = 255)
+      colors[c] = rgb(border_color[1], border_color[2], border_color[3], 255, maxColorValue = 255)
     }
   }
 
-  if (length(borders) > 1 & length(border_colors) == 1 & !is.null(border_colors)) {
-    border_colors = rep(border_colors, length(borders))
+  if (length(borders) > 1 & length(colors) == 1 & !is.null(colors)) {
+    colors = rep(colors, length(borders))
   }
 
   verts = obj1$surf_info[[hemisphere]]$num_verts
@@ -183,15 +183,20 @@ add_border = function(obj1, obj2) {
     borders = 1:length(border_data)
   }
 
-  if (is.null(border_colors)) {
-    border_colors = c()
+  if (is.null(colors)) {
+    color_list = c()
     for (i in 1:length(border_data)) {
       red = as.numeric(xml_attr(border_data[i], attr="Red"))
       green = as.numeric(xml_attr(border_data[i], attr="Green"))
       blue = as.numeric(xml_attr(border_data[i], attr="Blue"))
-      border_colors[i] = rgb(red, green, blue, 1)
+      color_list[i] = rgb(red, green, blue, 1)
     }
-
+    if (is.character(borders)) {
+      indices = match(borders, border_names)
+    } else {
+      indices = borders
+    }
+    colors = color_list[indices]
   }
 
   border_meshes = list()
@@ -213,7 +218,7 @@ add_border = function(obj1, obj2) {
       # RGL draws the first border piece weirdly; so "draw" a fake non-existent border first
       if (i==0) {
         border_mesh = rgl::mesh3d(
-          vertices=as.matrix(cbind(c(0,0,0,1),c(0,0,0,1))), segments=as.matrix(c(1,2)), material = material3d(lwd = width, col=border_colors[j])
+          vertices=as.matrix(cbind(c(0,0,0,1),c(0,0,0,1))), segments=as.matrix(c(1,2)), material = material3d(lwd = width, col=colors[j])
         )
         border_parts[[i+1]] = border_mesh
         next
@@ -242,7 +247,7 @@ add_border = function(obj1, obj2) {
       border_index_list[[i+1]] = border_indices
 
       border_mesh = rgl::mesh3d(
-        vertices=border_vertices, segments=border_indices, material = material3d(color = border_colors[j], lwd = width)
+        vertices=border_vertices, segments=border_indices, material = material3d(color = colors[j], lwd = width)
       )
       border_parts[[i+1]] = border_mesh
     }
@@ -251,7 +256,7 @@ add_border = function(obj1, obj2) {
     all_border_indices = do.call(cbind, border_index_list)
 
     border_mesh = rgl::mesh3d(
-      vertices = all_border_vertices, segments = all_border_indices, material = material3d(color = border_colors[j], lwd = width)
+      vertices = all_border_vertices, segments = all_border_indices, material = material3d(color = colors[j], lwd = width)
     )
 
     border_meshes[[j]] = border_mesh
