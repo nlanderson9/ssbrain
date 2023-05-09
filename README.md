@@ -47,29 +47,29 @@ Brains are built by adding function calls together (very similar to the syntax o
 
 ``` r 
 my_brain = ss_surf(surf = "fsaverage6") + 
-  ss_dscalar(dscalar_filename = "task_activity.dscalar.nii")
+  ss_dscalar(filename = "task_activity.dscalar.nii")
   
 # is equivalent to
 
 my_brain = ss_surf(surf = "fsaverage6")
 my_brain = my_brain +
-  ss_dscalar(dscalar_filename = "task_activity.dscalar.nii")
+  ss_dscalar(filename = "task_activity.dscalar.nii")
   
 # is equivalent to
 
 initial_brain = ss_surf(surf = "fsaverage6")
 my_brain = initial_brain + 
-  ss_dscalar(dscalar_filename = "task_activity.dscalar.nii")
+  ss_dscalar(filename = "task_activity.dscalar.nii")
 ```
 
 You can add multiple items to the same brain, of different kinds or more than one of the same kind:
 
 ``` r 
 my_brain = ss_surf(surf = "fsaverage6") + 
-  ss_dscalar(dscalar_filename = "task_activity1.dscalar.nii") + 
-  ss_dlabel(dlabel_filename = "regions.dlabel.nii") + 
-  ss_dscalar(dscalar_filename = "task_activity2.dscalar.nii") +
-  ss_border(border_filename = "network_parcellation.border", hemisphere = "left")
+  ss_dscalar(filename = "task_activity1.dscalar.nii") + 
+  ss_dlabel(filename = "regions.dlabel.nii") + 
+  ss_dscalar(filename = "task_activity2.dscalar.nii") +
+  ss_border(filename = "network_parcellation.border", hemisphere = "left")
 ```
 
 Adding items that overlap will layer them on top of each other on the brain. Each item is added in the order provided (i.e. the last items will appear on top, layed above the previous items). So, in the example above, the `task_activity2` dscalar will appear on top of the `regions` label file, which will appear on top of the `task_activity1` dscalar (borders are always on top of all other filetypes).
@@ -99,11 +99,11 @@ Additionally, you can set the view of your brain using `ss_view`. This is simila
 
 ``` r
 my_brain = ss_surf(surf = "fsaverage6") + 
-  ss_dscalar(dscalar_filename = "task_activity.dscalar.nii") + 
+  ss_dscalar(filename = "task_activity.dscalar.nii") + 
   ss_view(side = "lateral", rotation = "orbitofrontal")
   
 my_brain = ss_surf(surf = "fsaverage6") + 
-  ss_dscalar(dscalar_filename = "task_activity.dscalar.nii") + 
+  ss_dscalar(filename = "task_activity.dscalar.nii") + 
   ss_view(side = "lateral", rotation = c(30,90,90)
 ```
 
@@ -113,7 +113,7 @@ Note: Unlike the other `ss_*` builder functions, `ss_view` instances do NOT stac
 
 ``` r
 my_brain = ss_surf(surf = "fsaverage6") + 
-  ss_dscalar(dscalar_filename = "task_activity.dscalar.nii") + 
+  ss_dscalar(filename = "task_activity.dscalar.nii") + 
   ss_view(side = "lateral", rotation = "orbitofrontal") +
   ss_view(side = "lateral", rotation = "inferior_temporal")
 ```
@@ -127,7 +127,7 @@ Viewing uses the `showBrain` function, which opens an RGL viewer window and disp
 
 ``` r
 my_brain = ss_surf(surf = "fsaverage6") + 
-  ss_dscalar(dscalar_filename = "task_activity.dscalar.nii") + 
+  ss_dscalar(filename = "task_activity.dscalar.nii") + 
   ss_view(side = "lateral", rotation = "orbitofrontal")
 
 showBrain(my_brain, hemisphere = "left")
@@ -139,7 +139,7 @@ You can also capture images using `captureBrain`:
 
 ``` r
 my_brain = ss_surf(surf = "fsaverage6") + 
-  ss_dscalar(dscalar_filename = "task_activity.dscalar.nii") + 
+  ss_dscalar(filename = "task_activity.dscalar.nii") + 
   ss_view(side = "lateral", rotation = "orbitofrontal")
 
 captureBrain(my_brain, hemisphere = "left", filename = "my_brain_image.png")
@@ -167,11 +167,11 @@ for (s in 1:length(subjects)) {
   for (t in 1:length(task_map_names)) {
     task_map = task_map_names[t]
     task_brain = subject_brain + 
-      ss_dscalar(dscalar_filename = paste0("/my_directory/",subject,"/",task_map,".dscalar.nii"))
+      ss_dscalar(filename = paste0("/my_directory/",subject,"/",task_map,".dscalar.nii"))
     for (b in 1:length(border_names)) {
       border = border_numbers[b]
       border_brain = task_brain +
-        ss_border(border_filename = paste0("/my_directory/",subject,"/network_parcellation_lh.border",
+        ss_border(filename = paste0("/my_directory/",subject,"/network_parcellation_lh.border",
                   hemisphere = "left",
                   borders = border)
       for (v in 1:length(views)) {
