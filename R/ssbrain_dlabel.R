@@ -132,8 +132,10 @@ add_dlabel = function(obj1, obj2) {
       color = label_colors[[c]]
       if (!is.character(color) & !is.null(color)) {
         label_colors[[c]] = rgb(color[1], color[2], color[3], 255, maxColorValue = 255)
-      } else if (is.character(color) & ! grepl("^#.*", color)) {
-        label_colors[[c]] = col2hex(color)
+      } else if (!is.null(color)) {
+        if (is.character(color) & ! grepl("^#.*", color)) {
+          label_colors[[c]] = col2hex(color)
+        }
       }
     }
   }
