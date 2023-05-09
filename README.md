@@ -12,7 +12,6 @@ To install:
 # install.packages("devtools")
 devtools::install_github("nlanderson9/ssbrain")
 ```
-
 ``` r
 library(ssbrain)
 ```
