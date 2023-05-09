@@ -2,11 +2,11 @@
 #'
 #' @description This function sets a border data file on the surface of the brain
 #'
-#' @param border_filename A string with the full filepath to a border file
+#' @param filename A string with the full filepath to a border file
 #' @param hemisphere The hemisphere of the border file, either "left" or "right
 #' @param borders A single border, either an integer corresponding to the border number in the file (e.g. 5) or the name in the file (e.g. "LANG"). Can also be a vector of integers/names if multiple borders should be displayed. If omitted, all borders in the file will be plotted.
-#' @param border_width The width of the borders to be plotted. Defaults to 5.
-#' @param border_colors A list of colors the same length as \code{borders}; colors can be R color names (e.g. "red"), hex codes (e.g. "#FF0000"), or RGB triples (e.g. c(255,0,0)). If omitted, the default colors of the file will be used.
+#' @param width The width of the borders to be plotted. Defaults to 5.
+#' @param colors A list of colors the same length as \code{borders}; colors can be R color names (e.g. "red"), hex codes (e.g. "#FF0000"), or RGB triples (e.g. c(255,0,0)). If omitted, the default colors of the file will be used.
 #' @param offset Whether the border should be slightly raised up (offset) above the brain (TRUE) or not (FALSE). Defaults to TRUE.
 #'
 #' @import grDevices
@@ -17,13 +17,13 @@
 #' \dontrun{
 #' # Here, all borders will be plotted and the file's colorscheme will be used
 #' my_brain = ss_surf(surf="fsaverage6") +
-#'   ss_border(border_filename = "/path/to/my/datafile_lh.border", hemisphere = "left")
+#'   ss_border(filename = "/path/to/my/datafile_lh.border", hemisphere = "left")
 #'
 #' # Here, only borders 1 and 5 from the file will be used, and they are colored "red" and "green"
 #' my_brain = ss_surf(surf="fsaverage6")
 #'
 #' my_brain_new = my_brain +
-#'   ss_border(border_filename = "/path/to/my/datafile_lh.border",
+#'   ss_border(filename = "/path/to/my/datafile_lh.border",
 #'             hemisphere = "left",
 #'             borders = c(1,5),
 #'             border_colors = list("red", "green"))
@@ -31,14 +31,14 @@
 #' # Here, labels 8 through 10 will be plotted, with different
 #' # color specifications used for each
 #' my_brain = ss_surf(surf="fsaverage6") +
-#'   ss_border(border_filename = "/path/to/my/datafile_lh.border",
+#'   ss_border(filename = "/path/to/my/datafile_lh.border",
 #'             hemisphere = "left",
 #'             borders = 8:10,
 #'             border_colors = list("#FF00FF", c(212,118,97), "palegreen"))
 #'
 #' # Here, three borders are plotted by name, and all are black
 #' my_brain = ss_surf(surf="fsaverage6") +
-#'   ss_border(border_filename = "/path/to/my/datafile_lh.border",
+#'   ss_border(filename = "/path/to/my/datafile_lh.border",
 #'             hemisphere = "left",
 #'             borders = c("LANG", "VIS", "AUD"),
 #'             border_colors = "black")
@@ -48,21 +48,21 @@
 #' Note: Adding multiple \code{ss_border} items to the same object will cause overlapping brain maps, with the most recently-added on top.
 
 
-ss_border = function(border_filename,
+ss_border = function(filename,
                   hemisphere,
                   borders=NULL,
-                  border_width=5,
+                  width=5,
                   border_colors=NULL,
                   offset = TRUE) {
 
-  if (missing(border_filename)) {
+  if (missing(filename)) {
     stop("ERROR in `ss_border`: You must provide a border filename.")
   }
-  if (!file.exists(border_filename)) {
-    stop(paste0("ERROR in `ss_border`: Your file ", border_filename, " doesn't exist."))
+  if (!file.exists(filename)) {
+    stop(paste0("ERROR in `ss_border`: Your file ", filename, " doesn't exist."))
   }
-  if (!grepl("*\\.border$",border_filename)) {
-    cat(paste0("\nWarning for `border`: your filename ", border_filename, " doesn't end in `.border` - check to make sure this is the right filetype.\n"))
+  if (!grepl("*\\.border$",filename)) {
+    cat(paste0("\nWarning for `border`: your filename ", filename, " doesn't end in `.border` - check to make sure this is the right filetype.\n"))
   }
 
   if (missing(hemisphere)) {
@@ -78,11 +78,11 @@ ss_border = function(border_filename,
     }
   }
 
-  if (!is.numeric(border_width)) {
-    stop("ERROR in `ss_border`: The argument `border_width` must be a number.")
+  if (!is.numeric(width)) {
+    stop("ERROR in `ss_border`: The argument `width` must be a number.")
   }
-  if (! border_width >= 0) {
-    stop("ERROR in `ss_border`: The argument `border_width` must be a positive number.")
+  if (! width >= 0) {
+    stop("ERROR in `ss_border`: The argument `width` must be a positive number.")
   }
 
   for (border_color in border_colors) {
@@ -99,10 +99,10 @@ ss_border = function(border_filename,
     stop("ERROR in `ss_border`: The `offset` argument must be TRUE or FALSE.")
   }
 
-  output = list(border_filename = border_filename,
+  output = list(filename = filename,
                 hemisphere = hemisphere,
                 borders = borders,
-                border_width = border_width,
+                width = width,
                 border_colors = border_colors,
                 offset = offset)
   class(output) = c("ssbrain", "border")
@@ -121,7 +121,7 @@ ss_border = function(border_filename,
 #'
 #' @examples
 #' \dontrun{
-#' new_border = ss_border(border_filename = "/path/to/my/datafile.dlabel.nii", hemisphere = "left")
+#' new_border = ss_border(filename = "/path/to/my/datafile.dlabel.nii", hemisphere = "left")
 #' is.border(new_border)
 #' }
 
@@ -140,10 +140,10 @@ is.border = function(x) {
 #' @import xml2
 
 add_border = function(obj1, obj2) {
-  border_filename = obj2$border_filename
+  filename = obj2$filename
   hemisphere = obj2$hemisphere
   borders = obj2$borders
-  border_width = obj2$border_width
+  width = obj2$width
   border_colors = obj2$border_colors
   offset = obj2$offset
 
@@ -165,7 +165,7 @@ add_border = function(obj1, obj2) {
 
   verts = obj1$surf_info[[hemisphere]]$num_verts
 
-  xml_border = read_xml(border_filename)
+  xml_border = read_xml(filename)
   border_info = xml_children(xml_border)
   border_data = xml_children(border_info[2]) # here, 2 is the data
   if (is.numeric(borders)) {
@@ -213,7 +213,7 @@ add_border = function(obj1, obj2) {
       # RGL draws the first border piece weirdly; so "draw" a fake non-existent border first
       if (i==0) {
         border_mesh = rgl::mesh3d(
-          vertices=as.matrix(cbind(c(0,0,0,1),c(0,0,0,1))), segments=as.matrix(c(1,2)), material = material3d(lwd = border_width, col=border_colors[j])
+          vertices=as.matrix(cbind(c(0,0,0,1),c(0,0,0,1))), segments=as.matrix(c(1,2)), material = material3d(lwd = width, col=border_colors[j])
         )
         border_parts[[i+1]] = border_mesh
         next
@@ -242,7 +242,7 @@ add_border = function(obj1, obj2) {
       border_index_list[[i+1]] = border_indices
 
       border_mesh = rgl::mesh3d(
-        vertices=border_vertices, segments=border_indices, material = material3d(color = border_colors[j], lwd = border_width)
+        vertices=border_vertices, segments=border_indices, material = material3d(color = border_colors[j], lwd = width)
       )
       border_parts[[i+1]] = border_mesh
     }
@@ -251,7 +251,7 @@ add_border = function(obj1, obj2) {
     all_border_indices = do.call(cbind, border_index_list)
 
     border_mesh = rgl::mesh3d(
-      vertices = all_border_vertices, segments = all_border_indices, material = material3d(color = border_colors[j], lwd = border_width)
+      vertices = all_border_vertices, segments = all_border_indices, material = material3d(color = border_colors[j], lwd = width)
     )
 
     border_meshes[[j]] = border_mesh

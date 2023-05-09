@@ -22,7 +22,7 @@ checkBin = function(x, y) {
 #'
 #' @description This function sets a dscalar data file on the surface of the brain
 #'
-#' @param dscalar_filename A string with the full filepath to a dscalar file
+#' @param filename A string with the full filepath to a dscalar file
 #' @param colorbar A string containing the name of a colorbar to use (same names as Connectome Workbench)
 #' @param show Whether to show positive data, negative data, or all data. Options are "all", "pos", or "neg". Defaults to "all".
 #' @param pos_thresh The threshold below which to hide positive data. Defaults to 1.
@@ -37,12 +37,12 @@ checkBin = function(x, y) {
 #' @examples
 #' \dontrun{
 #' my_brain = ss_surf(surf="fsaverage6") +
-#'   ss_dscalar(dscalar_filename = "/path/to/my/datafile.dscalar.nii")
+#'   ss_dscalar(filename = "/path/to/my/datafile.dscalar.nii")
 #'
 #' my_brain = ss_surf(surf="fsaverage6")
 #'
 #' my_brain_new = my_brain +
-#'   ss_dscalar(dscalar_filename = "/path/to/my/datafile.dscalar.nii",
+#'   ss_dscalar(filename = "/path/to/my/datafile.dscalar.nii",
 #'              colorbar = "ROY-BIG-BL",
 #'              show= "pos",
 #'              pos_thresh = 10,
@@ -52,7 +52,7 @@ checkBin = function(x, y) {
 #' @details
 #' Note: Adding multiple \code{ss_dscalar} items to the same object will cause overlapping brain maps, with the most recently-added on top.
 
-ss_dscalar = function(dscalar_filename,
+ss_dscalar = function(filename,
                    colorbar="FSL",
                    show = "all",
                    pos_thresh = 1,
@@ -62,14 +62,14 @@ ss_dscalar = function(dscalar_filename,
                    pos_palette,
                    neg_palette) {
 
-  if (missing(dscalar_filename)) {
+  if (missing(filename)) {
     stop("ERROR in `ss_dscalar`: You must provide a dscalar filename.")
   }
-  if (!file.exists(dscalar_filename)) {
-    stop(paste0("ERROR in `ss_dscalar`: Your file ", dscalar_filename, " doesn't exist."))
+  if (!file.exists(filename)) {
+    stop(paste0("ERROR in `ss_dscalar`: Your file ", filename, " doesn't exist."))
   }
-  if (!grepl("*\\.dscalar\\.nii*",dscalar_filename)) {
-    cat(paste0("\nWarning for `dscalar`: your filename ", dscalar_filename, " doesn't end in `.dscalar.nii` - check to make sure this is the right filetype.\n"))
+  if (!grepl("*\\.dscalar\\.nii*",filename)) {
+    cat(paste0("\nWarning for `dscalar`: your filename ", filename, " doesn't end in `.dscalar.nii` - check to make sure this is the right filetype.\n"))
   }
 
   if (! colorbar %in% c("ROY-BIG-BL",
@@ -216,7 +216,7 @@ CIVIDIS")
     neg_palette = NULL
   }
 
-  output = list(dscalar_filename = dscalar_filename,
+  output = list(filename = filename,
                 colorbar = colorbar,
                 show = show,
                 pos_thresh = pos_thresh,
@@ -241,7 +241,7 @@ CIVIDIS")
 #'
 #' @examples
 #' \dontrun{
-#' new_dscalar = ss_dscalar(dscalar_filename = "/path/to/my/datafile.dscalar.nii")
+#' new_dscalar = ss_dscalar(filename = "/path/to/my/datafile.dscalar.nii")
 #' is.dscalar(new_dscalar)
 #' }
 
@@ -257,7 +257,7 @@ is.dscalar = function(x) {
 #' @param obj2 The new \code{ssdscalar} object to add
 
 add_dscalar = function(obj1, obj2){
-  dscalar_filename = obj2$dscalar_filename
+  filename = obj2$filename
   colorbar = obj2$colorbar
   show = obj2$show
   pos_thresh = obj2$pos_thresh
@@ -267,7 +267,7 @@ add_dscalar = function(obj1, obj2){
   pos_palette = obj2$pos_palette
   neg_palette = obj2$neg_palette
 
-  dscalar_data = importCifti(dscalar_filename)
+  dscalar_data = importCifti(filename)
   all_data = dscalar_data$data$normal
 
   l_verts = obj1$surf_info$left$num_verts
@@ -275,7 +275,7 @@ add_dscalar = function(obj1, obj2){
   total_verts = sum(l_verts, r_verts)
 
   if (nrow(all_data) != total_verts) {
-    stop(paste0("ERROR in `ss_dscalar`: the number of vertices in your dscalar file ",dscalar_filename," (",nrow(all_data),") does not match the number of vertices on your surface (",total_verts,")."))
+    stop(paste0("ERROR in `ss_dscalar`: the number of vertices in your dscalar file ",filename," (",nrow(all_data),") does not match the number of vertices on your surface (",total_verts,")."))
   }
 
 

@@ -2,7 +2,7 @@
 #'
 #' @description This function sets a seed (based on a vertex row number) and then creates a map from a corresponding dconn file containing a functional connectivity matrix.
 #'
-#' @param dconn_filename A string with the full filepath to a dconn file
+#' @param filename A string with the full filepath to a dconn file
 #' @param seed_value The number of the seed (row number, not vertex number)
 #' @param colorbar A string containing the name of a colorbar to use (same names as Connectome Workbench)
 #' @param thresh The option above which to hide data. Defaults to 0.2.
@@ -20,12 +20,12 @@
 #' @examples
 #' \dontrun{
 #' my_brain = ss_surf(surf="fsaverage6") +
-#'   ss_seed(dconn_filename = "/path/to/my/datafile.dconn.nii", seed_value = 31272)
+#'   ss_seed(filename = "/path/to/my/datafile.dconn.nii", seed_value = 31272)
 #'
 #' my_brain = ss_surf(surf="fsaverage6")
 #'
 #' my_brain_new = my_brain +
-#'   ss_dscalar(dconn_filename = "/path/to/my/datafile.dconn.nii",
+#'   ss_dscalar(filename = "/path/to/my/datafile.dconn.nii",
 #'              seed_value = 2213,
 #'              colorbar = "TURBO",
 #'              thresh = 0.3,
@@ -43,7 +43,7 @@
 #' @details
 #' Note: Adding multiple \code{ss_seed} items to the same object will cause overlapping brain maps, with the most recently-added on top.
 
-ss_seed = function(dconn_filename,
+ss_seed = function(filename,
                 seed_value,
                 colorbar="JET256",
                 thresh = .2,
@@ -54,19 +54,19 @@ ss_seed = function(dconn_filename,
                 seed_data,
                 palette) {
 
-  if (missing(dconn_filename) & missing(seed_data)) {
-    stop("ERROR in `ss_seed`: You must provide a dconn filename (`dconn_filename`) or dconn-style data (`seed_data`).")
+  if (missing(filename) & missing(seed_data)) {
+    stop("ERROR in `ss_seed`: You must provide a dconn filename (`filename`) or dconn-style data (`seed_data`).")
   }
-  if (!missing(dconn_filename) & !missing(seed_data)) {
+  if (!missing(filename) & !missing(seed_data)) {
     stop("Warning for `seed`: You've provided both a dconn filename and seed data; the seed data will override the dconn file.")
   }
 
-  if (!missing(dconn_filename)) {
-    if (!file.exists(dconn_filename)) {
-      stop(paste0("ERROR in `ss_seed`: Your file ", dconn_filename, " doesn't exist."))
+  if (!missing(filename)) {
+    if (!file.exists(filename)) {
+      stop(paste0("ERROR in `ss_seed`: Your file ", filename, " doesn't exist."))
     }
-    if (!grepl("*\\.dconn\\.nii*",dconn_filename)) {
-      cat(paste0("\nWarning for `seed`: your filename ", dconn_filename, " doesn't end in `.dconn.nii` - check to make sure this is the right filetype.\n"))
+    if (!grepl("*\\.dconn\\.nii*",filename)) {
+      cat(paste0("\nWarning for `seed`: your filename ", filename, " doesn't end in `.dconn.nii` - check to make sure this is the right filetype.\n"))
     }
   }
 
@@ -203,8 +203,8 @@ CIVIDIS")
     }
   }
 
-  if (missing(dconn_filename)) {
-    dconn_filename = NULL
+  if (missing(filename)) {
+    filename = NULL
   }
   if (missing(seed_data)) {
     seed_data = NULL
@@ -218,7 +218,7 @@ CIVIDIS")
     palette = NULL
   }
 
-  output = list(dconn_filename = dconn_filename,
+  output = list(filename = filename,
                 seed_value = seed_value,
                 colorbar = colorbar,
                 thresh = thresh,
@@ -244,7 +244,7 @@ CIVIDIS")
 #'
 #' @examples
 #' \dontrun{
-#' new_dconn = ss_seed(dconn_filename = "/path/to/my/datafile.dconn.nii", seed_value = 2213)
+#' new_dconn = ss_seed(filename = "/path/to/my/datafile.dconn.nii", seed_value = 2213)
 #' is.dconn(new_dconn)
 #' }
 
@@ -260,7 +260,7 @@ is.dconn = function(x) {
 #' @param obj2 The new \code{ssdconn} object to add
 
 add_dconn = function(obj1, obj2) {
-  dconn_filename = obj2$dconn_filename
+  filename = obj2$filename
   seed_value = obj2$seed_value
   colorbar = obj2$colorbar
   thresh = obj2$thresh
@@ -295,7 +295,7 @@ add_dconn = function(obj1, obj2) {
   palette = color_data$pos_palette
 
   if (is.null(seed_data)) {
-    dconn_data = distill_dconn(dconn_filename, seed_value, total_verts)
+    dconn_data = distill_dconn(filename, seed_value, total_verts)
   }
 
   if (is.null(seed_data)) {

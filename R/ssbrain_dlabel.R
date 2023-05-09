@@ -2,7 +2,7 @@
 #'
 #' @description This function sets a dlabel data file on the surface of the brain
 #'
-#' @param dlabel_filename A string with the full filepath to a dlabel file
+#' @param filename A string with the full filepath to a dlabel file
 #' @param labels A single label, either an integer corresponding to the label number in the file (e.g. 5) or the name in the file (e.g. "LANG"). Can also be a vector of integers/names if multiple labels should be displayed. If omitted, all labels in the file will be plotted.
 #' @param colors A list of colors the same length as \code{labels}; colors can be R color names (e.g. "red"), hex codes (e.g. "#FF0000"), or RGB triples (e.g. c(255,0,0)). If omitted, the default colors of the file will be used.
 #'
@@ -14,20 +14,20 @@
 #' \dontrun{
 #' # Here, all labels will be plotted and the file's colorscheme will be used
 #' my_brain = ss_surf(surf="fsaverage6") +
-#'   ss_dlabel(dlabel_filename = "/path/to/my/datafile.dlabel.nii")
+#'   ss_dlabel(filename = "/path/to/my/datafile.dlabel.nii")
 #'
 #' # Here, only labels 1 and 5 from the file will be used, and they are colored "red" and "green"
 #' my_brain = ss_surf(surf="fsaverage6")
 #'
 #' my_brain_new = my_brain +
-#'   ss_dlabel(dlabel_filename = "/path/to/my/datafile.dlabel.nii",
+#'   ss_dlabel(filename = "/path/to/my/datafile.dlabel.nii",
 #'              labels = c(1,5),
 #'              colors = list("red", "green"))
 #'
 #' # Here, labels 8 through 10 will be plotted, with different
 #' # color specifications used for each
 #' my_brain = ss_surf(surf="fsaverage6") +
-#'   ss_dlabel(dlabel_filename = "/path/to/my/datafile.dlabel.nii",
+#'   ss_dlabel(filename = "/path/to/my/datafile.dlabel.nii",
 #'   labels = 8:10,
 #'   colors = list("#FF00FF", c(212,118,97), "palegreen"))
 #' }
@@ -35,18 +35,18 @@
 #' @details
 #' Note: Adding multiple \code{ss_dlabel} items to the same object will cause overlapping brain maps, with the most recently-added on top.
 
-ss_dlabel = function(dlabel_filename,
+ss_dlabel = function(filename,
                   labels=NULL,
                   colors=NULL) {
 
-  if (missing(dlabel_filename)) {
+  if (missing(filename)) {
     stop("ERROR in `ss_dlabel`: You must provide a dlabel filename.")
   }
-  if (!file.exists(dlabel_filename)) {
-    stop(paste0("ERROR in `ss_dlabel`: Your file ", dlabel_filename, " doesn't exist."))
+  if (!file.exists(filename)) {
+    stop(paste0("ERROR in `ss_dlabel`: Your file ", filename, " doesn't exist."))
   }
-  if (!grepl("*\\.dlabel\\.nii*",dlabel_filename)) {
-    cat(paste0("\nWarning for `dlabel`: your filename ", dlabel_filename, " doesn't end in `dlabel.nii` - check to make sure this is the right filetype.\n"))
+  if (!grepl("*\\.dlabel\\.nii*",filename)) {
+    cat(paste0("\nWarning for `dlabel`: your filename ", filename, " doesn't end in `dlabel.nii` - check to make sure this is the right filetype.\n"))
   }
 
   if (!is.null(labels)) {
@@ -74,7 +74,7 @@ ss_dlabel = function(dlabel_filename,
     stop("ERROR in `ss_dlabel`: ERROR: The number of labels must match the number of colors")
   }
 
-  output = list(dlabel_filename = dlabel_filename,
+  output = list(filename = filename,
                 labels = labels,
                 colors = colors)
   class(output) = c("ssbrain", "dlabel")
@@ -93,7 +93,7 @@ ss_dlabel = function(dlabel_filename,
 #'
 #' @examples
 #' \dontrun{
-#' new_dlabel = ss_dlabel(dlabel_filename = "/path/to/my/datafile.dlabel.nii")
+#' new_dlabel = ss_dlabel(filename = "/path/to/my/datafile.dlabel.nii")
 #' is.dlabel(new_dlabel)
 #' }
 
@@ -113,7 +113,7 @@ is.dlabel = function(x) {
 #' @import gplots
 
 add_dlabel = function(obj1, obj2) {
-  dlabel_filename = obj2$dlabel_filename
+  filename = obj2$filename
   labels = obj2$labels
   label_colors = obj2$colors
 
@@ -129,7 +129,7 @@ add_dlabel = function(obj1, obj2) {
   }
 
 
-  dlabel = importCifti(dlabel_filename)
+  dlabel = importCifti(filename)
   all_data = dlabel$data$normal
 
   dlabel_meta = read_xml(dlabel$data_meta[[1]][2])
