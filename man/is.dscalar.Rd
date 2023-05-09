@@ -17,7 +17,7 @@ This function checks if an object is of the class \code{ssdscalar}.
 }
 \examples{
 \dontrun{
-new_dscalar = ss_dscalar(dscalar_filename = "/path/to/my/datafile.dscalar.nii")
+new_dscalar = ss_dscalar(filename = "/path/to/my/datafile.dscalar.nii")
 is.dscalar(new_dscalar)
 }
 }

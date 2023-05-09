@@ -5,7 +5,7 @@
 \title{Set a Seed}
 \usage{
 ss_seed(
-  dconn_filename,
+  filename,
   seed_value,
   colorbar = "JET256",
   thresh = 0.2,
@@ -18,7 +18,7 @@ ss_seed(
 )
 }
 \arguments{
-\item{dconn_filename}{A string with the full filepath to a dconn file}
+\item{filename}{A string with the full filepath to a dconn file}
 
 \item{seed_value}{The number of the seed (row number, not vertex number)}
 
@@ -47,12 +47,12 @@ Note: Adding multiple \code{ss_seed} items to the same object will cause overlap
 \examples{
 \dontrun{
 my_brain = ss_surf(surf="fsaverage6") +
-  ss_seed(dconn_filename = "/path/to/my/datafile.dconn.nii", seed_value = 31272)
+  ss_seed(filename = "/path/to/my/datafile.dconn.nii", seed_value = 31272)
 
 my_brain = ss_surf(surf="fsaverage6")
 
 my_brain_new = my_brain +
-  ss_dscalar(dconn_filename = "/path/to/my/datafile.dconn.nii",
+  ss_dscalar(filename = "/path/to/my/datafile.dconn.nii",
              seed_value = 2213,
              colorbar = "TURBO",
              thresh = 0.3,

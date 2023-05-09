@@ -5,24 +5,24 @@
 \title{Set a Border}
 \usage{
 ss_border(
-  border_filename,
+  filename,
   hemisphere,
   borders = NULL,
-  border_width = 5,
-  border_colors = NULL,
+  width = 5,
+  colors = NULL,
   offset = TRUE
 )
 }
 \arguments{
-\item{border_filename}{A string with the full filepath to a border file}
+\item{filename}{A string with the full filepath to a border file}
 
 \item{hemisphere}{The hemisphere of the border file, either "left" or "right}
 
 \item{borders}{A single border, either an integer corresponding to the border number in the file (e.g. 5) or the name in the file (e.g. "LANG"). Can also be a vector of integers/names if multiple borders should be displayed. If omitted, all borders in the file will be plotted.}
 
-\item{border_width}{The width of the borders to be plotted. Defaults to 5.}
+\item{width}{The width of the borders to be plotted. Defaults to 5.}
 
-\item{border_colors}{A list of colors the same length as \code{borders}; colors can be R color names (e.g. "red"), hex codes (e.g. "#FF0000"), or RGB triples (e.g. c(255,0,0)). If omitted, the default colors of the file will be used.}
+\item{colors}{A list of colors the same length as \code{borders}; colors can be R color names (e.g. "red"), hex codes (e.g. "#FF0000"), or RGB triples (e.g. c(255,0,0)). If omitted, the default colors of the file will be used.}
 
 \item{offset}{Whether the border should be slightly raised up (offset) above the brain (TRUE) or not (FALSE). Defaults to TRUE.}
 }
@@ -36,31 +36,31 @@ Note: Adding multiple \code{ss_border} items to the same object will cause overl
 \dontrun{
 # Here, all borders will be plotted and the file's colorscheme will be used
 my_brain = ss_surf(surf="fsaverage6") +
-  ss_border(border_filename = "/path/to/my/datafile_lh.border", hemisphere = "left")
+  ss_border(filename = "/path/to/my/datafile_lh.border", hemisphere = "left")
 
 # Here, only borders 1 and 5 from the file will be used, and they are colored "red" and "green"
 my_brain = ss_surf(surf="fsaverage6")
 
 my_brain_new = my_brain +
-  ss_border(border_filename = "/path/to/my/datafile_lh.border",
+  ss_border(filename = "/path/to/my/datafile_lh.border",
             hemisphere = "left",
             borders = c(1,5),
-            border_colors = list("red", "green"))
+            colors = list("red", "green"))
 
 # Here, labels 8 through 10 will be plotted, with different
 # color specifications used for each
 my_brain = ss_surf(surf="fsaverage6") +
-  ss_border(border_filename = "/path/to/my/datafile_lh.border",
+  ss_border(filename = "/path/to/my/datafile_lh.border",
             hemisphere = "left",
             borders = 8:10,
-            border_colors = list("#FF00FF", c(212,118,97), "palegreen"))
+            colors = list("#FF00FF", c(212,118,97), "palegreen"))
 
 # Here, three borders are plotted by name, and all are black
 my_brain = ss_surf(surf="fsaverage6") +
-  ss_border(border_filename = "/path/to/my/datafile_lh.border",
+  ss_border(filename = "/path/to/my/datafile_lh.border",
             hemisphere = "left",
             borders = c("LANG", "VIS", "AUD"),
-            border_colors = "black")
+            colors = "black")
 }
 
 }

@@ -5,7 +5,7 @@
 \title{Set a Dscalar}
 \usage{
 ss_dscalar(
-  dscalar_filename,
+  filename,
   colorbar = "FSL",
   show = "all",
   pos_thresh = 1,
@@ -17,7 +17,7 @@ ss_dscalar(
 )
 }
 \arguments{
-\item{dscalar_filename}{A string with the full filepath to a dscalar file}
+\item{filename}{A string with the full filepath to a dscalar file}
 
 \item{colorbar}{A string containing the name of a colorbar to use (same names as Connectome Workbench)}
 
@@ -44,12 +44,12 @@ Note: Adding multiple \code{ss_dscalar} items to the same object will cause over
 \examples{
 \dontrun{
 my_brain = ss_surf(surf="fsaverage6") +
-  ss_dscalar(dscalar_filename = "/path/to/my/datafile.dscalar.nii")
+  ss_dscalar(filename = "/path/to/my/datafile.dscalar.nii")
 
 my_brain = ss_surf(surf="fsaverage6")
 
 my_brain_new = my_brain +
-  ss_dscalar(dscalar_filename = "/path/to/my/datafile.dscalar.nii",
+  ss_dscalar(filename = "/path/to/my/datafile.dscalar.nii",
              colorbar = "ROY-BIG-BL",
              show= "pos",
              pos_thresh = 10,

@@ -17,7 +17,7 @@ This function checks if an object is of the class \code{ssborder}.
 }
 \examples{
 \dontrun{
-new_border = ss_border(border_filename = "/path/to/my/datafile.dlabel.nii", hemisphere = "left")
+new_border = ss_border(filename = "/path/to/my/datafile.dlabel.nii", hemisphere = "left")
 is.border(new_border)
 }
 }

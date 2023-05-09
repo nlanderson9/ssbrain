@@ -4,10 +4,10 @@
 \alias{ss_dlabel}
 \title{Set a Dlabel}
 \usage{
-ss_dlabel(dlabel_filename, labels = NULL, colors = NULL)
+ss_dlabel(filename, labels = NULL, colors = NULL)
 }
 \arguments{
-\item{dlabel_filename}{A string with the full filepath to a dlabel file}
+\item{filename}{A string with the full filepath to a dlabel file}
 
 \item{labels}{A single label, either an integer corresponding to the label number in the file (e.g. 5) or the name in the file (e.g. "LANG"). Can also be a vector of integers/names if multiple labels should be displayed. If omitted, all labels in the file will be plotted.}
 
@@ -23,20 +23,20 @@ Note: Adding multiple \code{ss_dlabel} items to the same object will cause overl
 \dontrun{
 # Here, all labels will be plotted and the file's colorscheme will be used
 my_brain = ss_surf(surf="fsaverage6") +
-  ss_dlabel(dlabel_filename = "/path/to/my/datafile.dlabel.nii")
+  ss_dlabel(filename = "/path/to/my/datafile.dlabel.nii")
 
 # Here, only labels 1 and 5 from the file will be used, and they are colored "red" and "green"
 my_brain = ss_surf(surf="fsaverage6")
 
 my_brain_new = my_brain +
-  ss_dlabel(dlabel_filename = "/path/to/my/datafile.dlabel.nii",
+  ss_dlabel(filename = "/path/to/my/datafile.dlabel.nii",
              labels = c(1,5),
              colors = list("red", "green"))
 
 # Here, labels 8 through 10 will be plotted, with different
 # color specifications used for each
 my_brain = ss_surf(surf="fsaverage6") +
-  ss_dlabel(dlabel_filename = "/path/to/my/datafile.dlabel.nii",
+  ss_dlabel(filename = "/path/to/my/datafile.dlabel.nii",
   labels = 8:10,
   colors = list("#FF00FF", c(212,118,97), "palegreen"))
 }

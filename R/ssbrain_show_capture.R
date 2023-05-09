@@ -235,6 +235,40 @@ captureBrain = function(brain,
   }
 }
 
+#' @title Open a New Brain Window
+#'
+#' @description Forces a new brain window to open. All new instances of \code{\link[ssbrain]{showBrain}} and \code{\link[ssbrain]{captureBrain}} will use this window. This can be useful if you've already opened a brain window and don't want to overwrite/close it (e.g. to look at two brains at once).
+#'
+#' @param width The width of the window. Default is 800.
+#' @param height The height of the window. Default is 500.
+#'
+#' @import rgl
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' my_brain1 = ss_surf(surf="fsaverage6") +
+#'   ss_dscalar(dscalar_filename = "/path/to/my_file1.dscalar.nii")
+#'
+#' my_brain2 = ss_surf(surf="fsaverage6") +
+#'   ss_dscalar(dscalar_filename = "/path/to/my_file2.dscalar.nii")
+#'
+#' To show my_brain1, then replace it with my_brain2:
+#' showBrain(my_brain1, hemisphere = "left")
+#' showBrain(my_brain2, hemisphere = "left")
+#'
+#' To show my_brain1, then to open my_brain2 in a second window:
+#' showBrain(my_brain1, hemisphere = "left")
+#' openNewBrainViewer()
+#' showBrain(my_brain2, hemisphere = "left")
+#' }
+
+openNewBrainViewer = function(width=800,
+                              height=500) {
+  rgl::open3d(windowRect=c(0,0,width,height))
+}
+
 #' @title Close All Open Brain Windows
 #'
 #' @description Closes all currently-open brain windows

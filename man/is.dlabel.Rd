@@ -17,7 +17,7 @@ This function checks if an object is of the class \code{ssdlabel}.
 }
 \examples{
 \dontrun{
-new_dlabel = ss_dlabel(dlabel_filename = "/path/to/my/datafile.dlabel.nii")
+new_dlabel = ss_dlabel(filename = "/path/to/my/datafile.dlabel.nii")
 is.dlabel(new_dlabel)
 }
 }

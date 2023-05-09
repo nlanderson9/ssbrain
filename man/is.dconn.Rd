@@ -17,7 +17,7 @@ This function checks if an object is of the class \code{ssdconn}.
 }
 \examples{
 \dontrun{
-new_dconn = ss_seed(dconn_filename = "/path/to/my/datafile.dconn.nii", seed_value = 2213)
+new_dconn = ss_seed(filename = "/path/to/my/datafile.dconn.nii", seed_value = 2213)
 is.dconn(new_dconn)
 }
 }
