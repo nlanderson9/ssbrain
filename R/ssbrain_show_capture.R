@@ -254,11 +254,11 @@ captureBrain = function(brain,
 #' my_brain2 = ss_surf(surf="fsaverage6") +
 #'   ss_dscalar(dscalar_filename = "/path/to/my_file2.dscalar.nii")
 #'
-#' To show my_brain1, then replace it with my_brain2:
+#' # To show my_brain1, then replace it with my_brain2:
 #' showBrain(my_brain1, hemisphere = "left")
 #' showBrain(my_brain2, hemisphere = "left")
 #'
-#' To show my_brain1, then to open my_brain2 in a second window:
+#' # To show my_brain1, then to open my_brain2 in a second window:
 #' showBrain(my_brain1, hemisphere = "left")
 #' openNewBrainViewer()
 #' showBrain(my_brain2, hemisphere = "left")
