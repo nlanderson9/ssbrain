@@ -152,14 +152,16 @@ add_border = function(obj1, obj2) {
     offset = FALSE
   }
 
-  if (length(colors) <= 1 & !is.vector(colors[1])) {
-    if (!is.character(colors) & !is.null(colors)) {
+  if (length(colors) == 1) {
+    if (!is.character(colors)) {
       colors = rgb(colors[1], colors[2], colors[3], 255, maxColorValue = 255)
     } else if (!is.null(colors)) {
       if (is.character(colors) & ! grepl("^#.*", colors)) {
         colors = col2hex(colors)
       }
     }
+  } else if (is.null(colors)) {
+    colors = NULL
   } else {
     for (c in 1:length(colors)) {
       color = colors[[c]]

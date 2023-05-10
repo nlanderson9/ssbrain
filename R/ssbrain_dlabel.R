@@ -121,12 +121,14 @@ add_dlabel = function(obj1, obj2) {
   r_verts = obj1$surf_info$right$num_verts
   total_verts = sum(l_verts, r_verts)
 
-  if (length(label_colors) <= 1 & !is.vector(label_colors[1])) {
-    if (!is.character(label_colors) & !is.null(label_colors)) {
+  if (length(label_colors) == 1) {
+    if (!is.character(label_colors)) {
       label_colors = rgb(label_colors[1], label_colors[2], label_colors[3], 255, maxColorValue = 255)
     } else if (is.character(label_colors) & ! grepl("^#.*", label_colors)) {
       label_colors = col2hex(label_colors)
     }
+  } else if (is.null(label_colors)) {
+    label_colors = NULL
   } else {
     for (c in 1:length(label_colors)) {
       color = label_colors[[c]]
