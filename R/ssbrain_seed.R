@@ -61,6 +61,10 @@ ss_seed = function(filename,
     stop("Warning for `ss_seed`: You've provided both a dconn filename and seed data; the seed data will override the dconn file.")
   }
 
+  if(missing(filename)) {
+    filename = NULL
+  }
+
   if (!missing(filename)) {
     if (!file.exists(filename)) {
       stop(paste0("ERROR in `ss_seed`: Your file ", filename, " doesn't exist."))

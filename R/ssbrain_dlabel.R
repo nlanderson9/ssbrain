@@ -47,6 +47,11 @@ ss_dlabel = function(filename,
   if (!missing(filename) & !missing(dlabel_data)) {
     stop("Warning for `ss_dlabel`: You've provided both a dlabel filename and dlabel data; the dlabel data will override the dlabel file.")
   }
+
+  if(missing(filename)) {
+    filename = NULL
+  }
+
   if (!missing(filename)) {
     if (!file.exists(filename)) {
       stop(paste0("ERROR in `ss_dlabel`: Your file ", filename, " doesn't exist."))
