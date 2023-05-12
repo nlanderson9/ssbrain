@@ -41,7 +41,7 @@ ss_dlabel = function(filename,
                   colors=NULL,
                   dlabel_data) {
 
-  if (missing(filename)) {
+  if (missing(filename) & missing(dlabel_data)) {
     stop("ERROR in `ss_dlabel`: You must provide a dlabel filename.")
   }
   if (!file.exists(filename)) {

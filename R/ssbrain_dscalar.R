@@ -64,7 +64,7 @@ ss_dscalar = function(filename,
                    pos_palette,
                    neg_palette) {
 
-  if (missing(filename)) {
+  if (missing(filename) & missing(dscalar_data)) {
     stop("ERROR in `ss_dscalar`: You must provide a dscalar filename.")
   }
   if (!file.exists(filename)) {
