@@ -25,10 +25,10 @@ checkBin = function(x, y) {
 #' @param filename A string with the full filepath to a dscalar file
 #' @param colorbar A string containing the name of a colorbar to use (same names as Connectome Workbench)
 #' @param show Whether to show positive data, negative data, or all data. Options are "all", "pos", or "neg". Defaults to "all".
-#' @param pos_thresh The threshold below which to hide positive data. Defaults to 1.
-#' @param neg_thresh The option above which to hide negative data. Defaults to -1.
-#' @param pos_colorrange The positive range in which to spread the \code{colorbar}'s colors. Defaults to c(1,3)
-#' @param neg_colorrange The negative range in which to spread the \code{colorbar}'s colors. Defaults to c(-1,-3)
+#' @param pos_thresh The threshold below which to hide positive data. Defaults to NULL (no threshold).
+#' @param neg_thresh The option above which to hide negative data. Defaults to NULL (no threshold).
+#' @param pos_colorrange The positive range in which to spread the \code{colorbar}'s colors. Defaults to NULL (full data range).
+#' @param neg_colorrange The negative range in which to spread the \code{colorbar}'s colors. Defaults to NULL (full data range).
 #' @param pos_palette (Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for positive colors.
 #' @param neg_palette (Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for negative colors.
 #'
@@ -161,44 +161,56 @@ CIVIDIS")
     stop("ERROR in `ss_dscalar`: Accepatable values for `show` are:\npos\nneg\nall")
   }
 
-  if (!is.numeric(pos_thresh)) {
-    stop("ERROR in `ss_dscalar`: The `pos_thresh` argument must be a number.")
-  } else if (! pos_thresh >= 0) {
-    stop("ERROR in `ss_dscalar`: The `pos_thresh` argument must be a number >= 0.")
+  if (!is.null(pos_thresh)) {
+    if (!is.numeric(pos_thresh)) {
+      stop("ERROR in `ss_dscalar`: The `pos_thresh` argument must be a number.")
+    } else if (! pos_thresh >= 0) {
+      stop("ERROR in `ss_dscalar`: The `pos_thresh` argument must be a number >= 0.")
+    }
   }
 
-  if (!is.numeric(neg_thresh)) {
-    stop("ERROR in `ss_dscalar`: The `neg_thresh` argument must be a number.")
-  } else if (! neg_thresh <= 0) {
-    stop("ERROR in `ss_dscalar`: The `neg_thresh` argument must be a number <= 0.")
+  if (!is.null(neg_thresh)) {
+    if (!is.numeric(neg_thresh)) {
+      stop("ERROR in `ss_dscalar`: The `neg_thresh` argument must be a number.")
+    } else if (! neg_thresh <= 0) {
+      stop("ERROR in `ss_dscalar`: The `neg_thresh` argument must be a number <= 0.")
+    }
   }
 
-  if (length(pos_colorrange) != 2) {
-    stop("ERROR in `ss_dscalar`: The `pos_colorrange` argument must be a two-number vector (e.g. `c(1, 3)`)")
-  }
-  if (!is.numeric(pos_colorrange)) {
-    stop("ERROR in `ss_dscalar`: The `pos_colorrange` argument must be a two-number vector (e.g. `c(1, 3)`)")
-  }
-  if (!all(pos_colorrange >=0)) {
-    stop("ERROR in `ss_dscalar`: The `pos_colorrange` argument must be two numbers >= 0 (e.g. `c(1, 3)`)")
-  }
-
-  if (length(neg_colorrange) != 2) {
-    stop("ERROR in `ss_dscalar`: The `neg_colorrange` argument must be a two-number vector (e.g. `c(-1, -3)`)")
-  }
-  if (!is.numeric(neg_colorrange)) {
-    stop("ERROR in `ss_dscalar`: The `neg_colorrange` argument must be a two-number vector (e.g. `c(-1, -3)`)")
-  }
-  if (!all(neg_colorrange <=0)) {
-    stop("ERROR in `ss_dscalar`: The `neg_colorrange` argument must be two numbers <= 0 (e.g. `c(-1, -3)`)")
+  if (!is.null(pos_colorrange)) {
+    if (length(pos_colorrange) != 2) {
+      stop("ERROR in `ss_dscalar`: The `pos_colorrange` argument must be a two-number vector (e.g. `c(1, 3)`)")
+    }
+    if (!is.numeric(pos_colorrange)) {
+      stop("ERROR in `ss_dscalar`: The `pos_colorrange` argument must be a two-number vector (e.g. `c(1, 3)`)")
+    }
+    if (!all(pos_colorrange >=0)) {
+      stop("ERROR in `ss_dscalar`: The `pos_colorrange` argument must be two numbers >= 0 (e.g. `c(1, 3)`)")
+    }
   }
 
-  if (pos_colorrange[1] > pos_colorrange[2]) {
-    pos_colorrange = c(pos_colorrange[2], pos_colorrange[1])
+  if (!is.null(neg_colorrange)) {
+    if (length(neg_colorrange) != 2) {
+      stop("ERROR in `ss_dscalar`: The `neg_colorrange` argument must be a two-number vector (e.g. `c(-1, -3)`)")
+    }
+    if (!is.numeric(neg_colorrange)) {
+      stop("ERROR in `ss_dscalar`: The `neg_colorrange` argument must be a two-number vector (e.g. `c(-1, -3)`)")
+    }
+    if (!all(neg_colorrange <=0)) {
+      stop("ERROR in `ss_dscalar`: The `neg_colorrange` argument must be two numbers <= 0 (e.g. `c(-1, -3)`)")
+    }
   }
 
-  if (neg_colorrange[1] > neg_colorrange[2]) {
-    neg_colorrange = c(neg_colorrange[2], neg_colorrange[1])
+  if (!is.null(pos_colorrange)) {
+    if (pos_colorrange[1] > pos_colorrange[2]) {
+      pos_colorrange = c(pos_colorrange[2], pos_colorrange[1])
+    }
+  }
+
+  if (!is.null(neg_colorrange)) {
+    if (neg_colorrange[1] > neg_colorrange[2]) {
+      neg_colorrange = c(neg_colorrange[2], neg_colorrange[1])
+    }
   }
 
   if (!missing(pos_palette)) {
@@ -302,6 +314,19 @@ add_dscalar = function(obj1, obj2){
 
   data_min = min(all_data)
   data_max = max(all_data)
+
+  if (is.null(pos_thresh)) {
+    pos_thresh = 0
+  }
+  if (is.null(neg_thresh)) {
+    neg_thresh = 0
+  }
+  if (is.null(pos_colorrange)) {
+    pos_colorrange = c(0,data_max)
+  }
+  if (is.null(neg_colorrange)) {
+    neg_colorrange = c(0, data_min)
+  }
 
   prop_pos_data = round((abs(data_max) / (abs(data_min)+abs(data_max)))*100)
   prop_neg_data = 100 - prop_pos_data
