@@ -301,7 +301,7 @@ add_dscalar = function(obj1, obj2){
     dscalar_data = importCifti(filename)
     all_data = dscalar_data$data$normal
   } else {
-    all_data = dscalar_data
+    all_data = as.matrix(dscalar_data)
   }
 
   l_verts = obj1$surf_info$left$num_verts
