@@ -52,7 +52,7 @@ ss_dlabel = function(filename,
     filename = NULL
   }
 
-  if (!missing(filename)) {
+  if (!is.null(filename)) {
     if (!file.exists(filename)) {
       stop(paste0("ERROR in `ss_dlabel`: Your file ", filename, " doesn't exist."))
     }

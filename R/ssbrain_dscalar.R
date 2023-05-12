@@ -75,7 +75,7 @@ ss_dscalar = function(filename,
     filename = NULL
   }
 
-  if (!missing(filename)) {
+  if (!is.null(filename)) {
     if (!file.exists(filename)) {
       stop(paste0("ERROR in `ss_dscalar`: Your file ", filename, " doesn't exist."))
     }

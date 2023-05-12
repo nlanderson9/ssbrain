@@ -65,7 +65,7 @@ ss_seed = function(filename,
     filename = NULL
   }
 
-  if (!missing(filename)) {
+  if (!is.null(filename)) {
     if (!file.exists(filename)) {
       stop(paste0("ERROR in `ss_seed`: Your file ", filename, " doesn't exist."))
     }
