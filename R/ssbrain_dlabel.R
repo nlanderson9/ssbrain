@@ -44,11 +44,16 @@ ss_dlabel = function(filename,
   if (missing(filename) & missing(dlabel_data)) {
     stop("ERROR in `ss_dlabel`: You must provide a dlabel filename.")
   }
-  if (!file.exists(filename)) {
-    stop(paste0("ERROR in `ss_dlabel`: Your file ", filename, " doesn't exist."))
+  if (!missing(filename) & !missing(dlabel_data)) {
+    stop("Warning for `ss_dlabel`: You've provided both a dlabel filename and dlabel data; the dlabel data will override the dlabel file.")
   }
-  if (!grepl("*\\.dlabel\\.nii*",filename)) {
-    cat(paste0("\nWarning for `dlabel`: your filename ", filename, " doesn't end in `dlabel.nii` - check to make sure this is the right filetype.\n"))
+  if (!missing(filename)) {
+    if (!file.exists(filename)) {
+      stop(paste0("ERROR in `ss_dlabel`: Your file ", filename, " doesn't exist."))
+    }
+    if (!grepl("*\\.dlabel\\.nii*",filename)) {
+      cat(paste0("\nWarning for `dlabel`: your filename ", filename, " doesn't end in `dlabel.nii` - check to make sure this is the right filetype.\n"))
+    }
   }
 
   if (!is.null(labels)) {

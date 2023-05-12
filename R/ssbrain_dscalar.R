@@ -67,11 +67,16 @@ ss_dscalar = function(filename,
   if (missing(filename) & missing(dscalar_data)) {
     stop("ERROR in `ss_dscalar`: You must provide a dscalar filename.")
   }
-  if (!file.exists(filename)) {
-    stop(paste0("ERROR in `ss_dscalar`: Your file ", filename, " doesn't exist."))
+  if (!missing(filename) & !missing(dscalar_data)) {
+    stop("Warning for `ss_dscalar`: You've provided both a dscalar filename and dscalar data; the dscalar data will override the dscalar file.")
   }
-  if (!grepl("*\\.dscalar\\.nii*",filename)) {
-    cat(paste0("\nWarning for `dscalar`: your filename ", filename, " doesn't end in `.dscalar.nii` - check to make sure this is the right filetype.\n"))
+  if (!missing(filename)) {
+    if (!file.exists(filename)) {
+      stop(paste0("ERROR in `ss_dscalar`: Your file ", filename, " doesn't exist."))
+    }
+    if (!grepl("*\\.dscalar\\.nii*",filename)) {
+      cat(paste0("\nWarning for `dscalar`: your filename ", filename, " doesn't end in `.dscalar.nii` - check to make sure this is the right filetype.\n"))
+    }
   }
 
   if (! colorbar %in% c("ROY-BIG-BL",
