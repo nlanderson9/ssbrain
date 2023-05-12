@@ -5,6 +5,7 @@
 #' @param filename A string with the full filepath to a dlabel file
 #' @param labels A single label, either an integer corresponding to the label number in the file (e.g. 5) or the name in the file (e.g. "LANG"). Can also be a vector of integers/names if multiple labels should be displayed. If omitted, all labels in the file will be plotted.
 #' @param colors A list of colors the same length as \code{labels}; colors can be R color names (e.g. "red"), hex codes (e.g. "#FF0000"), or RGB triples (e.g. c(255,0,0)). If omitted, the default colors of the file will be used.
+#' @param dlabel_data (Optional argument) Rather than passing a dlabel file, you can directly pass in an R vector containing the data. This overrides \code{filename}.
 #'
 #' @import grDevices
 #'
@@ -37,7 +38,8 @@
 
 ss_dlabel = function(filename,
                   labels=NULL,
-                  colors=NULL) {
+                  colors=NULL,
+                  dlabel_data) {
 
   if (missing(filename)) {
     stop("ERROR in `ss_dlabel`: You must provide a dlabel filename.")
@@ -74,9 +76,14 @@ ss_dlabel = function(filename,
     stop("ERROR in `ss_dlabel`: ERROR: The number of labels must match the number of colors")
   }
 
+  if (missing(dlabel_data)) {
+    dlabel_data = NULL
+  }
+
   output = list(filename = filename,
                 labels = labels,
-                colors = colors)
+                colors = colors,
+                dlabel_data = dlabel_data)
   class(output) = c("ssbrain", "dlabel")
   return(output)
 }
@@ -116,6 +123,7 @@ add_dlabel = function(obj1, obj2) {
   filename = obj2$filename
   labels = obj2$labels
   label_colors = obj2$colors
+  dlabel_data = obj2$dlabel_data
 
   l_verts = obj1$surf_info$left$num_verts
   r_verts = obj1$surf_info$right$num_verts
@@ -142,9 +150,12 @@ add_dlabel = function(obj1, obj2) {
     }
   }
 
-
-  dlabel = importCifti(filename)
-  all_data = dlabel$data$normal
+  if (is.null(dlabel_data)) {
+    dlabel = importCifti(filename)
+    all_data = dlabel$data$normal
+  } else {
+    all_data = dlabel_data
+  }
 
   dlabel_meta = read_xml(dlabel$data_meta[[1]][2])
   dlabel_meta1 = xml_children(dlabel_meta)

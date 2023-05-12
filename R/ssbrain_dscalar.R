@@ -29,6 +29,7 @@ checkBin = function(x, y) {
 #' @param neg_thresh The option above which to hide negative data. Defaults to NULL (no threshold).
 #' @param pos_colorrange The positive range in which to spread the \code{colorbar}'s colors. Defaults to NULL (full data range).
 #' @param neg_colorrange The negative range in which to spread the \code{colorbar}'s colors. Defaults to NULL (full data range).
+#' @param dscalar_data (Optional argument) Rather than passing a dscalar file, you can directly pass in an R vector containing the data. This overrides \code{filename}.
 #' @param pos_palette (Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for positive colors.
 #' @param neg_palette (Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for negative colors.
 #'
@@ -59,6 +60,7 @@ ss_dscalar = function(filename,
                    neg_thresh = -1,
                    pos_colorrange = c(1,3),
                    neg_colorrange = c(-1,-3),
+                   dscalar_data,
                    pos_palette,
                    neg_palette) {
 
@@ -213,6 +215,10 @@ CIVIDIS")
     }
   }
 
+  if (missing(dscalar_data)) {
+    dscalar_data = NULL
+  }
+
   if (!missing(pos_palette)) {
     if (!is.function(pos_palette)) {
       stop("ERROR in `dscalar: The `pos_palette` argument must be a palette function created by colorRampPalette().")
@@ -235,6 +241,7 @@ CIVIDIS")
                 neg_thresh = neg_thresh,
                 pos_colorrange = pos_colorrange,
                 neg_colorrange = neg_colorrange,
+                dscalar_data = dscalar_data,
                 pos_palette = pos_palette,
                 neg_palette = neg_palette)
   class(output) = c("ssbrain", "dscalar")
@@ -276,11 +283,16 @@ add_dscalar = function(obj1, obj2){
   neg_thresh = obj2$neg_thresh
   pos_colorrange = obj2$pos_colorrange
   neg_colorrange = obj2$neg_colorrange
+  dscalar_data = obj2$dscalar_data
   pos_palette = obj2$pos_palette
   neg_palette = obj2$neg_palette
 
-  dscalar_data = importCifti(filename)
-  all_data = dscalar_data$data$normal
+  if (is.null(dscalar_data)) {
+    dscalar_data = importCifti(filename)
+    all_data = dscalar_data$data$normal
+  } else {
+    all_data = dscalar_data
+  }
 
   l_verts = obj1$surf_info$left$num_verts
   r_verts = obj1$surf_info$right$num_verts
