@@ -169,6 +169,9 @@ showBrain = function(brain,
     rgl::addNormals(brain_mesh),
     color=colors,
     specular="black",
+    ambient="gray12",
+    emission="black",
+    shininess=50,
     alpha=1.0,
     legend=TRUE
   )
