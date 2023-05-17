@@ -34,7 +34,7 @@ ss_seed(
 
 \item{seed_sphere_color}{If show_seed_sphere is TRUE, the color of the sphere. Defaults to "white".}
 
-\item{seed_data}{(Optional argument) Rather than passing a dconn file, you can directly pass in an R matrix containing the functional connectivity data. This can save time if you want to draw multiple seeds from the same dconn matrix. This overrides \code{dconne_filename}.}
+\item{seed_data}{(Optional argument) Rather than passing a dconn file, you can directly pass in an R matrix containing the functional connectivity data. This can save time if you want to draw multiple seeds from the same dconn matrix. This overrides \code{filename}.}
 
 \item{palette}{(Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar}.}
 }

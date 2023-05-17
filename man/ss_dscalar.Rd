@@ -8,10 +8,11 @@ ss_dscalar(
   filename,
   colorbar = "FSL",
   show = "all",
-  pos_thresh = 1,
-  neg_thresh = -1,
-  pos_colorrange = c(1, 3),
-  neg_colorrange = c(-1, -3),
+  pos_thresh = NULL,
+  neg_thresh = NULL,
+  pos_colorrange = NULL,
+  neg_colorrange = NULL,
+  dscalar_data,
   pos_palette,
   neg_palette
 )
@@ -23,13 +24,15 @@ ss_dscalar(
 
 \item{show}{Whether to show positive data, negative data, or all data. Options are "all", "pos", or "neg". Defaults to "all".}
 
-\item{pos_thresh}{The threshold below which to hide positive data. Defaults to 1.}
+\item{pos_thresh}{The threshold below which to hide positive data. Defaults to NULL (no threshold).}
 
-\item{neg_thresh}{The option above which to hide negative data. Defaults to -1.}
+\item{neg_thresh}{The option above which to hide negative data. Defaults to NULL (no threshold).}
 
-\item{pos_colorrange}{The positive range in which to spread the \code{colorbar}'s colors. Defaults to c(1,3)}
+\item{pos_colorrange}{The positive range in which to spread the \code{colorbar}'s colors. Defaults to NULL (full data range).}
 
-\item{neg_colorrange}{The negative range in which to spread the \code{colorbar}'s colors. Defaults to c(-1,-3)}
+\item{neg_colorrange}{The negative range in which to spread the \code{colorbar}'s colors. Defaults to NULL (full data range).}
+
+\item{dscalar_data}{(Optional argument) Rather than passing a dscalar file, you can directly pass in an R vector containing the data. This overrides \code{filename}.}
 
 \item{pos_palette}{(Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for positive colors.}
 

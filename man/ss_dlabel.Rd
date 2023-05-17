@@ -4,7 +4,7 @@
 \alias{ss_dlabel}
 \title{Set a Dlabel}
 \usage{
-ss_dlabel(filename, labels = NULL, colors = NULL)
+ss_dlabel(filename, labels = NULL, colors = NULL, dlabel_data)
 }
 \arguments{
 \item{filename}{A string with the full filepath to a dlabel file}
@@ -12,6 +12,8 @@ ss_dlabel(filename, labels = NULL, colors = NULL)
 \item{labels}{A single label, either an integer corresponding to the label number in the file (e.g. 5) or the name in the file (e.g. "LANG"). Can also be a vector of integers/names if multiple labels should be displayed. If omitted, all labels in the file will be plotted.}
 
 \item{colors}{A list of colors the same length as \code{labels}; colors can be R color names (e.g. "red"), hex codes (e.g. "#FF0000"), or RGB triples (e.g. c(255,0,0)). If omitted, the default colors of the file will be used.}
+
+\item{dlabel_data}{(Optional argument) Rather than passing a dlabel file, you can directly pass in an R vector containing the data. This overrides \code{filename}.}
 }
 \description{
 This function sets a dlabel data file on the surface of the brain
