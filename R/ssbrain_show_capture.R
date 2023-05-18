@@ -176,6 +176,8 @@ showBrain = function(brain,
     legend=TRUE
   )
 
+  # wire3d(brain_mesh)
+
   if (!is.null(brain$borders_info[[hemisphere]])) {
     for (i in 1:length(brain$borders_info[[hemisphere]]$mesh_list)) {
       this_border = brain$borders_info[[hemisphere]]$mesh_list[[i]]
