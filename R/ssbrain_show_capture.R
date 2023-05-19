@@ -105,7 +105,8 @@ get_viewmatrix = function(hemisphere, side, wb_X, wb_Y, wb_Z) {
 showBrain = function(brain,
                      hemisphere,
                      width=800,
-                     height=500) {
+                     height=500,
+                     ambient_color = "gray12") {
 
   if (missing(brain)) {
     stop("ERROR: You must provide a 'brain' object to show.")
@@ -169,7 +170,7 @@ showBrain = function(brain,
     rgl::addNormals(brain_mesh),
     color=colors,
     specular="black",
-    ambient="gray12",
+    ambient=ambient_color,
     emission="black",
     shininess=50,
     alpha=1.0,
