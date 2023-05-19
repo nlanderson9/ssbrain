@@ -227,8 +227,9 @@ captureBrain = function(brain,
                         width=800,
                         height=500,
                         crop=TRUE,
-                        cropmargin=10) {
-  showBrain(brain,hemisphere, width, height)
+                        cropmargin=10,
+                        ambient_color = "gray12") {
+  showBrain(brain,hemisphere, width, height, ambient_color)
   snapshot3d(filename, width=width, height=height,webshot=FALSE)
   # rgl.postscript(paste0(filename,".svg"), fmt="svg")
   # rsvg_png(paste0(filename,".svg"), filename, width=pixwidth, height=pixheight)
