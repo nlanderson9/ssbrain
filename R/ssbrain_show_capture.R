@@ -236,6 +236,11 @@ captureBrain = function(brain,
     img = magick::image_read(filename)
     img = magick::image_trim(img)
     img = magick::image_border(img, color="white", geometry = paste(cropmargin,"x",cropmargin))
+    img = magick::image_convert(img, colorspace = "sRGB")
+    magick::image_write(image=img, path = filename)
+  } else {
+    img = magick::image_read(filename)
+    img = magick::image_convert(img, colorspace = "sRGB")
     magick::image_write(image=img, path = filename)
   }
 }
