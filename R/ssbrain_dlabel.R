@@ -171,7 +171,7 @@ add_dlabel = function(obj1, obj2) {
     all_data = dlabel_data
   }
 
-  if (!is.null(dlabel_data)) {
+  if (is.null(dlabel_data)) {
 
     dlabel_meta = read_xml(dlabel$data_meta[[1]][2])
     dlabel_meta1 = xml_children(dlabel_meta)
