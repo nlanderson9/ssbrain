@@ -88,6 +88,10 @@ ss_dlabel = function(filename,
 
   if (missing(dlabel_data)) {
     dlabel_data = NULL
+  } else {
+    if (is.null(colors)) {
+      stop("ERROR in `ss_dlabel`: You cannot provide `dlabel_data` without providing colors to use")
+    }
   }
 
   output = list(filename = filename,
@@ -167,30 +171,33 @@ add_dlabel = function(obj1, obj2) {
     all_data = dlabel_data
   }
 
-  dlabel_meta = read_xml(dlabel$data_meta[[1]][2])
-  dlabel_meta1 = xml_children(dlabel_meta)
-  dlabel_meta2 = xml_children(dlabel_meta1)
-  dlabel_meta3 = xml_children(dlabel_meta2[2])
-  dlabel_meta4 = xml_children(dlabel_meta3)
-  dlabel_meta5 = xml_children(dlabel_meta4[2])
-  dlabel_labelnames = xml_text(dlabel_meta5)
-  dlabel_labelnames = dlabel_labelnames[-1]
-  label_red = xml_attr(dlabel_meta5, "Red")
-  label_green = xml_attr(dlabel_meta5, "Green")
-  label_blue = xml_attr(dlabel_meta5, "Blue")
-  label_red = as.numeric(label_red[-1])
-  label_green = as.numeric(label_green[-1])
-  label_blue = as.numeric(label_blue[-1])
-  label_alpha = rep(1,length(label_red))
-  rgb_matrix = cbind(label_red, label_green, label_blue, label_alpha)
-  rgb_fun = function(x) {
-    rgb(x[1], x[2], x[3], x[4])
-  }
-  dlabel_colors = apply(rgb_matrix, 1, rgb_fun)
+  if (!is.null(dlabel_data)) {
 
-  if (is.character(labels)) {
-    if(! all(labels %in% dlabel_labelnames)) {
-      stop("ERROR in `ss_dlabel`: One or more labels do not appear in the dlabel file.")
+    dlabel_meta = read_xml(dlabel$data_meta[[1]][2])
+    dlabel_meta1 = xml_children(dlabel_meta)
+    dlabel_meta2 = xml_children(dlabel_meta1)
+    dlabel_meta3 = xml_children(dlabel_meta2[2])
+    dlabel_meta4 = xml_children(dlabel_meta3)
+    dlabel_meta5 = xml_children(dlabel_meta4[2])
+    dlabel_labelnames = xml_text(dlabel_meta5)
+    dlabel_labelnames = dlabel_labelnames[-1]
+    label_red = xml_attr(dlabel_meta5, "Red")
+    label_green = xml_attr(dlabel_meta5, "Green")
+    label_blue = xml_attr(dlabel_meta5, "Blue")
+    label_red = as.numeric(label_red[-1])
+    label_green = as.numeric(label_green[-1])
+    label_blue = as.numeric(label_blue[-1])
+    label_alpha = rep(1,length(label_red))
+    rgb_matrix = cbind(label_red, label_green, label_blue, label_alpha)
+    rgb_fun = function(x) {
+      rgb(x[1], x[2], x[3], x[4])
+    }
+    dlabel_colors = apply(rgb_matrix, 1, rgb_fun)
+
+    if (is.character(labels)) {
+      if(! all(labels %in% dlabel_labelnames)) {
+        stop("ERROR in `ss_dlabel`: One or more labels do not appear in the dlabel file.")
+      }
     }
   }
 
