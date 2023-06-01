@@ -347,7 +347,7 @@ add_dscalar = function(obj1, obj2){
     pos_colorrange = c(pos_thresh,data_max+.0000000000001)
   }
   if (is.null(neg_colorrange)) {
-    neg_colorrange = c(data_min+.0000000000001, neg_thresh)
+    neg_colorrange = c(data_min-.0000000000001, neg_thresh)
   }
 
   prop_pos_data = round((abs(data_max) / (abs(data_min)+abs(data_max)))*100)
