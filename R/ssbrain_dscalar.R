@@ -338,16 +338,16 @@ add_dscalar = function(obj1, obj2){
   data_max = max(all_data)
 
   if (is.null(pos_thresh)) {
-    pos_thresh = 0
+    pos_thresh = min(all_data[all_data>0])
   }
   if (is.null(neg_thresh)) {
-    neg_thresh = 0
+    neg_thresh = max(all_data[all_data<0])
   }
   if (is.null(pos_colorrange)) {
-    pos_colorrange = c(0,data_max-.0000000000001)
+    pos_colorrange = c(pos_thresh,data_max-.0000000000001)
   }
   if (is.null(neg_colorrange)) {
-    neg_colorrange = c(data_min, 0)
+    neg_colorrange = c(data_min+.0000000000001, neg_thresh)
   }
 
   prop_pos_data = round((abs(data_max) / (abs(data_min)+abs(data_max)))*100)
@@ -389,7 +389,7 @@ add_dscalar = function(obj1, obj2){
   if (show %in% c("pos", "all")) {
     low_pos_bin = which(unlist(lapply(levels(pos_bins_labeled), checkBin, y=pos_colorrange[1])))
     if (length(low_pos_bin) == 0) {
-      if (pos_colorrange[1] < min(all_data[pos_indices])) {
+      if (pos_colorrange[1] <= min(all_data[pos_indices])) {
         low_pos_bin = 1
       } else {
         stop("ERROR: You've chosen a minimum colorrange value that is higher than your highest data value.")
@@ -397,7 +397,7 @@ add_dscalar = function(obj1, obj2){
     }
     high_pos_bin = which(unlist(lapply(levels(pos_bins_labeled), checkBin, y=pos_colorrange[2])))
     if (length(high_pos_bin) == 0) {
-      if (pos_colorrange[2] > max(all_data[pos_indices])) {
+      if (pos_colorrange[2] >= max(all_data[pos_indices])) {
         high_pos_bin = length(levels(pos_bins_labeled))
       } else {
         stop("ERROR: You've chosen a maximum colorrange value that is lower than your lowest data value.")
@@ -411,7 +411,7 @@ add_dscalar = function(obj1, obj2){
   if (show %in% c("neg", "all")) {
     low_neg_bin = which(unlist(lapply(levels(neg_bins_labeled), checkBin, y=neg_colorrange[2])))
     if (length(low_neg_bin) == 0) {
-      if (neg_colorrange[2] < min(all_data[neg_indices])) {
+      if (neg_colorrange[2] >= max(all_data[neg_indices])) {
         low_neg_bin = length(levels(neg_bins_labeled))
       } else {
         stop("ERROR: You've chosen a minimum colorrange value that is higher than ")
@@ -419,7 +419,7 @@ add_dscalar = function(obj1, obj2){
     }
     high_neg_bin = which(unlist(lapply(levels(neg_bins_labeled), checkBin, y=neg_colorrange[1])))
     if (length(high_neg_bin) == 0) {
-      if (neg_colorrange[1] < max(all_data[neg_indices])) {
+      if (neg_colorrange[1] <= min(all_data[neg_indices])) {
         high_neg_bin = 1
       } else {
         stop("ERROR: You've chosen a maximum colorrange value that is lower than ")
