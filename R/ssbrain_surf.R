@@ -18,7 +18,7 @@
 #' my_brain = ss_surf(surfL = "/path/to/surface/lh.pial_infl2.surf.gii")
 #' }
 
-ss_surf = function(surf=NULL, surfL = NULL, surfR = NULL) {
+ss_surf = function(surf=NULL, surfL = NULL, surfR = NULL, showMedialWall = TRUE, medialWallColor = "#858585") {
   brain = list(
     view_info=NULL,
     surf_info=NULL,
@@ -60,8 +60,11 @@ ss_surf = function(surf=NULL, surfL = NULL, surfR = NULL) {
 
       surfL = importSurface(surfL)
       surfR = importSurface(surfR)
-
-      brain$surf_info = list(left = surfL, right = surfR, border_vertices = border_vertex_coords_fs6)
+      if (showMedialWall) {
+        brain$surf_info = list(left = surfL, right = surfR, border_vertices = border_vertex_coords_fs6, medial_wall = medial_wall_fs6, medial_wall_color = medialWallColor)
+      } else {
+        brain$surf_info = list(left = surfL, right = surfR, border_vertices = border_vertex_coords_fs6, medial_wall = NULL, medial_wall_color = NULL)
+      }
     }
     else if (surf == "fsaverage7") {
       surfL = system.file("extdata", "fs7", "lh.pial_infl4.surf.gii", package="ssbrain")
@@ -69,8 +72,11 @@ ss_surf = function(surf=NULL, surfL = NULL, surfR = NULL) {
 
       surfL = importSurface(surfL)
       surfR = importSurface(surfR)
-
-      brain$surf_info = list(left = surfL, right = surfR, border_vertices = border_vertex_coords_fs7)
+      if (showMedialWall) {
+        brain$surf_info = list(left = surfL, right = surfR, border_vertices = border_vertex_coords_fs7, medial_wall = medial_wall_fs7, medial_wall_color = medialWallColor)
+      } else {
+        brain$surf_info = list(left = surfL, right = surfR, border_vertices = border_vertex_coords_fs7, medial_wall = NULL, medial_wall_color = NULL)
+      }
     }
   }
   else {
