@@ -124,14 +124,14 @@ exportCifti = function(cifti_filename, data, luttpath) {
   data = data %>% replace_na(0)
   if (length(data) == 81924) {
     mesh='fsaverage6'
-    template="/projects/b1134/tools/workbench_tools/fsaverage6/surf/fsaverage6_cifti_template.dscalar.nii"
-    surf_l="/projects/b1134/tools/workbench_tools/fsaverage6/surf/lh.pial_infl2.surf.gii"
-    surf_r="/projects/b1134/tools/workbench_tools/fsaverage6/surf/rh.pial_infl2.surf.gii"
+    template=system.file("extdata","/fs6/fsaverage6_cifti_template.dscalar.nii", package = "ssbrain")
+    surf_l=system.file("extdata","/fs6/lh.pial_infl2.surf.gii", package = "ssbrain")
+    surf_r=system.file("extdata","/fs6/rh.pial_infl2.surf.gii", package = "ssbrain")
   } else if (length(data) == 327684) {
     mesh='fsaverage'
-    template="/projects/b1134/tools/workbench_tools/fsaverage7/surf/fsaverage7_cifti_template.dscalar.nii"
-    surf_l="/projects/b1134/tools/workbench_tools/fsaverage7/surf/lh.pial_infl4.surf.gii"
-    surf_r="/projects/b1134/tools/workbench_tools/fsaverage7/surf/rh.pial_infl4.surf.gii"
+    template=system.file("extdata","/fs7/fsaverage7_cifti_template.dscalar.nii", package = "ssbrain")
+    surf_l=system.file("extdata","/fs7/lh.pial_infl4.surf.gii", package = "ssbrain")
+    surf_r=system.file("extdata","/fs7/rh.pial_infl4.surf.gii", package = "ssbrain")
   } else {
     stop("This function only supports `fsaverage6` and `fsaverage`. Make sure that your `data` argument contains either 81924 or 327684 vertices.")
   }
