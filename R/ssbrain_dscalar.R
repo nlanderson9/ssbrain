@@ -353,6 +353,15 @@ add_dscalar = function(obj1, obj2){
   prop_pos_data = round((abs(data_max) / (abs(data_min)+abs(data_max)))*100)
   prop_neg_data = 100 - prop_pos_data
 
+  if (length(all_data[all_data>0]) == 0) {
+    prop_pos_data = 0
+    prop_neg_data = 100
+  }
+  if (length(all_data[all_data<0]) == 0) {
+    prop_neg_data = 0
+    prop_pos_data = 100
+  }
+
   if (prop_pos_data == 0) {
     pos_indices = which(all_data>0)
     neg_indices = which(all_data<0)
