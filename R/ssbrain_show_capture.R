@@ -200,7 +200,7 @@ showBrain = function(brain,
       spheres3d(x=coords[1], y=coords[2], z=coords[3], radius=size, color=color)
     }
   }
-  rglwidget()
+  # rglwidget()
 }
 
 #' @title Capture a Visually-displayed Brain Surface
@@ -236,8 +236,8 @@ captureBrain = function(brain,
                         cropmargin=10,
                         ambient_color = "gray12") {
   showBrain(brain,hemisphere, width, height, ambient_color)
-  # snapshot3d(filename, width=width, height=height,webshot=FALSE)
-  save_info = suppressWarnings(rglwidget(snapshot=TRUE))
+  snapshot3d(filename, width=width, height=height,webshot=FALSE)
+  # save_info = suppressWarnings(rglwidget(snapshot=TRUE))
   temp_path = save_info[1]
   file.copy(temp_path, filename)
   unlink(temp_path)
