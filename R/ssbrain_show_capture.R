@@ -238,9 +238,9 @@ captureBrain = function(brain,
   showBrain(brain,hemisphere, width, height, ambient_color)
   snapshot3d(filename, width=width, height=height,webshot=FALSE)
   # save_info = suppressWarnings(rglwidget(snapshot=TRUE))
-  temp_path = save_info[1]
-  file.copy(temp_path, filename)
-  unlink(temp_path)
+  # temp_path = save_info[1]
+  # file.copy(temp_path, filename)
+  # unlink(temp_path)
 
 
   # rgl.postscript(paste0(filename,".svg"), fmt="svg")
