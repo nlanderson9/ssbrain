@@ -166,10 +166,10 @@ showBrain = function(brain,
 
   colors = brain$color_info[[hemisphere]]
 
-  if (!is.null(brain$surf_info$medial_wall)) {
-    medial_wall_vertices = brain$surf_info$medial_wall[[hemisphere]]
-    colors[medial_wall_vertices] = brain$surf_info$medial_wall_color
-  }
+  # if (!is.null(brain$surf_info$medial_wall)) {
+  #   medial_wall_vertices = brain$surf_info$medial_wall[[hemisphere]]
+  #   colors[medial_wall_vertices] = brain$surf_info$medial_wall_color
+  # }
 
   mesh_col <- rgl::shade3d(
     rgl::addNormals(brain_mesh),
