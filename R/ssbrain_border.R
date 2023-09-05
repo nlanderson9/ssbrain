@@ -263,7 +263,7 @@ add_border = function(obj1, obj2) {
           for (k in 1:3) {
             ref_vertex = vertex_triple[k]
             face_cols = ceiling(which(obj1$surf_info[[hemisphere]]$faces == ref_vertex)/3)
-            point_coord = brain$surf_info[[hemisphere]]$vertices[,ref_vertex]
+            point_coord = obj1$surf_info[[hemisphere]]$vertices[,ref_vertex]
             pointlist = list()
             for (f in 1:length(face_cols)) {
               face_idx = (obj1$surf_info[[hemisphere]]$faces[,face_cols[f]])
