@@ -10,6 +10,7 @@
 #' @param offset Whether the border should be slightly raised up (offset) above the brain (TRUE) or not (FALSE). Defaults to TRUE.
 #'
 #' @import grDevices
+#' @importFrom pracma cross
 #'
 #' @export
 #'
@@ -53,7 +54,7 @@ ss_border = function(filename,
                   borders=NULL,
                   width=5,
                   colors=NULL,
-                  offset = TRUE) {
+                  offset = .1) {
 
   if (missing(filename)) {
     stop("ERROR in `ss_border`: You must provide a border filename.")
@@ -95,8 +96,8 @@ ss_border = function(filename,
     }
   }
 
-  if (!is.logical(offset)) {
-    stop("ERROR in `ss_border`: The `offset` argument must be TRUE or FALSE.")
+  if (!is.numeric(offset)) {
+    stop("ERROR in `ss_border`: The `offset` argument must be numeric. For no offset, use `0`.")
   }
 
   output = list(filename = filename,
@@ -116,6 +117,8 @@ ss_border = function(filename,
 #' @param x The object to check
 #'
 #' @return TRUE or FALSE
+#'
+#' @importFrom pracma cross
 #'
 #' @export
 #'
@@ -147,10 +150,10 @@ add_border = function(obj1, obj2) {
   colors = obj2$colors
   offset = obj2$offset
 
-  if (offset & is.null(obj1$surf_info$border_vertices[[hemisphere]])) {
-    cat("\nWarning for `border`: Currently, border offset is only supported with standard fsaverage6/7 meshes. Borders will be set to non-offset.\n")
-    offset = FALSE
-  }
+  # if (offset & is.null(obj1$surf_info$border_vertices[[hemisphere]])) {
+  #   cat("\nWarning for `border`: Currently, border offset is only supported with standard fsaverage6/7 meshes. Borders will be set to non-offset.\n")
+  #   offset = FALSE
+  # }
 
   if (length(colors) == 1 & !is.list(colors)) {
     if (!is.character(colors)) {
@@ -247,10 +250,42 @@ add_border = function(obj1, obj2) {
       vertex_matrix = t(do.call(rbind, split_vertices))
       vertex_matrix = vertex_matrix + 1 # border files use vertices, not row numbers
 
-      if (offset) {
+      if (offset == .1 & !is.null(obj1$surf_info$border_vertices[[hemisphere]])) {
         border_vertices = apply(vertex_matrix, 2, function(x) as.matrix(c(rowMeans(obj1$surf_info$border_vertices[[hemisphere]][,x]),1)))
-      } else {
+      } else if (offset == 0) {
         border_vertices = apply(vertex_matrix, 2, function(x) as.matrix(c(rowMeans(obj1$surf_info[[hemisphere]]$vertices[,x][1:3,]),1)))
+      } else {
+        vertex_list = list()
+
+        for (v in 1:ncol(vertex_matrix)) {
+          vertex_triple = vertex_matrix[,v]
+          triple_borderlist = list()
+          for (k in 1:3) {
+            ref_vertex = vertex_triple[k]
+            face_cols = ceiling(which(obj1$surf_info[[hemisphere]]$faces == ref_vertex)/3)
+            point_coord = brain$surf_info[[hemisphere]]$vertices[,ref_vertex]
+            pointlist = list()
+            for (f in 1:length(face_cols)) {
+              face_idx = (obj1$surf_info[[hemisphere]]$faces[,face_cols[f]])
+              this_matrix = cbind(obj1$surf_info[[hemisphere]]$vertices[,face_idx[1]], obj1$surf_info[[hemisphere]]$vertices[,face_idx[2]], obj1$surf_info[[hemisphere]]$vertices[,face_idx[3]])
+              vec1 = this_matrix[,2] - this_matrix[,1]
+              vec2 = this_matrix[,3] - this_matrix[,1]
+              normal = pracma::cross(vec1[1:3], vec2[1:3])
+              normal = normal / sqrt(sum(normal^2))
+              displacement = offset * normal
+              displacement = c(displacement, 0)
+              final_point = point_coord + displacement
+              pointlist[[f]] = final_point
+            }
+            point = rowMeans(do.call(cbind, pointlist))
+            triple_borderlist[[k]] = point
+          }
+          triple_point = rowMeans(do.call(cbind, triple_borderlist))
+          vertex_list[[v]] = triple_point
+        }
+
+        border_vertices = do.call(cbind, vertex_list)
+
       }
 
 

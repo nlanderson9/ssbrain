@@ -18,6 +18,7 @@ Imports:
     rgl,
     tidyr,
     viridisLite,
-    xml2
+    xml2,
+    pracma
 Depends: 
     R (>= 4.1.1)
