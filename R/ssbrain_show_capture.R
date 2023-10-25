@@ -88,6 +88,8 @@ get_viewmatrix = function(hemisphere, side, wb_X, wb_Y, wb_Z) {
 #' @param hemisphere Which brain hemisphere to display (either "left" or "right")
 #' @param width The width of the window. Default is 800.
 #' @param height The height of the window. Default is 500.
+#' @param zoom The zoom level for the display. Default is .6.
+#' @param ambient_color The color to use for the brain surface. Default is "gray12".
 #'
 #' @import rgl
 #'
@@ -106,6 +108,7 @@ showBrain = function(brain,
                      hemisphere,
                      width=800,
                      height=500,
+                     zoom=.6,
                      ambient_color = "gray12") {
 
   if (missing(brain)) {
@@ -162,7 +165,7 @@ showBrain = function(brain,
     brainview = get_viewmatrix(hemisphere, side, rotation_coords[1], rotation_coords[2], rotation_coords[3])
   }
 
-  rgl::view3d(userMatrix=brainview, fov=0, zoom=.6)
+  rgl::view3d(userMatrix=brainview, fov=0, zoom=zoom)
 
   colors = brain$color_info[[hemisphere]]
 
@@ -212,6 +215,8 @@ showBrain = function(brain,
 #' @param filename A string with the full path to the PNG file you'd like to create
 #' @param width The width of the window. Default is 800.
 #' @param height The height of the window. Default is 500.
+#' @param zoom The zoom level for the display. Default is .6.
+#' @param ambient_color The color to use for the brain surface. Default is "gray12".
 #' @param crop Whether or not to crop the resulting image. Default is TRUE.
 #' @param cropmargin The margin of whitespace to leave around the brain when cropping. Default is 10.
 #'
@@ -232,10 +237,11 @@ captureBrain = function(brain,
                         filename,
                         width=800,
                         height=500,
+                        zoom=.6,
                         crop=TRUE,
                         cropmargin=10,
                         ambient_color = "gray12") {
-  showBrain(brain,hemisphere, width, height, ambient_color)
+  showBrain(brain,hemisphere, width, height, zoom, ambient_color)
   snapshot3d(filename, width=width, height=height,webshot=FALSE)
   # save_info = suppressWarnings(rglwidget(snapshot=TRUE))
   # temp_path = save_info[1]
