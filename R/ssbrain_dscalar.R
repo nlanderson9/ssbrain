@@ -304,6 +304,9 @@ add_dscalar = function(obj1, obj2){
     all_data = as.matrix(dscalar_data)
   }
 
+  all_data[is.na(all_data)] = 0
+  all_data[is.nan(all_data)] = 0
+
   l_verts = obj1$surf_info$left$num_verts
   r_verts = obj1$surf_info$right$num_verts
   total_verts = sum(l_verts, r_verts)
