@@ -38,8 +38,8 @@ ss_surf = function(surf=NULL, surfL = NULL, surfR = NULL, showMedialWall = TRUE,
     stop("ERROR in `ss_surf`: Using the `surf` argument automatically sets the `surfL` and `surfR` arguments; you cannot use both.")
   }
   if (!is.null(surf)) {
-    if (! surf %in% c("fsaverage6", "fsaverage7")) {
-      stop("ERROR in `ss_surf`: The `surf` argument must be 'fsaverage6' or 'fsaverage7'.")
+    if (! surf %in% c("fsaverage6", "fsaverage7", "cerebellum_flat")) {
+      stop("ERROR in `ss_surf`: The `surf` argument must be one of 'fsaverage6', 'fsaverage7', or 'cerebellum_flat'.")
     }
   }
   if (!is.null(surfL)) {
@@ -77,6 +77,18 @@ ss_surf = function(surf=NULL, surfL = NULL, surfR = NULL, showMedialWall = TRUE,
       } else {
         brain$surf_info = list(left = surfL, right = surfR, border_vertices = border_vertex_coords_fs7, medial_wall = NULL, medial_wall_color = NULL)
       }
+    }
+    else if (surf == "cerebellum_flat") {
+      surfL = system.file("extdata", "cerebellum_flat", "FLAT.surf.gii",
+                          package = "ssbrain")
+      surfL = importSurface(surfL)
+      surfR = system.file("extdata", "cerebellum_flat", "FLAT.surf.gii",
+                          package = "ssbrain")
+      surfR = importSurface(surfR)
+      brain$surf_info = list(left = surfL, right = surfR,
+                             border_vertices = border_vertex_coords_fs6,
+                             medial_wall = NULL, medial_wall_color = NULL)
+      brain$surf_info$right$num_verts=0;
     }
   }
   else {
