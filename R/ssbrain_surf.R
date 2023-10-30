@@ -86,7 +86,7 @@ ss_surf = function(surf=NULL, surfL = NULL, surfR = NULL, showMedialWall = TRUE,
                           package = "ssbrain")
       surfR = importSurface(surfR)
       brain$surf_info = list(left = surfL, right = surfR,
-                             border_vertices = border_vertex_coords_fs6,
+                             border_vertices = NULL,
                              medial_wall = NULL, medial_wall_color = NULL)
       brain$surf_info$right$num_verts=0;
     }
