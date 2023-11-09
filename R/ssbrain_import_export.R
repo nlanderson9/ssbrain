@@ -133,7 +133,7 @@ exportCifti = function(cifti_filename, data, luttpath) {
     surf_l=system.file("extdata","/fs7/lh.pial_infl4.surf.gii", package = "ssbrain")
     surf_r=system.file("extdata","/fs7/rh.pial_infl4.surf.gii", package = "ssbrain")
   } else {
-    stop("This function only supports `fsaverage6` and `fsaverage`. Make sure that your `data` argument contains either 81924 or 327684 vertices.")
+    warning("This function formally supports `fsaverage6` and `fsaverage`. Your `data` argument does not contain 81924 or 327684 vertices; proceed with caution.")
   }
 
   if (grepl("dscalar",cifti_filename)) {
