@@ -132,6 +132,11 @@ exportCifti = function(cifti_filename, data, luttpath) {
     template=system.file("extdata","/fs7/fsaverage7_cifti_template.dscalar.nii", package = "ssbrain")
     surf_l=system.file("extdata","/fs7/lh.pial_infl4.surf.gii", package = "ssbrain")
     surf_r=system.file("extdata","/fs7/rh.pial_infl4.surf.gii", package = "ssbrain")
+  } else if (length(data) == 20484) {
+    mesh='fsaverage5'
+    template=system.file("extdata","/fs5/fsaverage5_cifti_template.dscalar.nii", package = "ssbrain")
+    surf_l=system.file("extdata","/fs5/lh.pial_infl2.surf.gii", package = "ssbrain")
+    surf_r=system.file("extdata","/fs5/rh.pial_infl2.surf.gii", package = "ssbrain")
   } else {
     warning("This function formally supports `fsaverage6` and `fsaverage`. Your `data` argument does not contain 81924 or 327684 vertices; proceed with caution.")
     template=system.file("extdata","/fs6/fsaverage6_cifti_template.dscalar.nii", package = "ssbrain")
