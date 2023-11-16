@@ -142,11 +142,13 @@ exportCifti = function(cifti_filename, data, luttpath) {
     template=system.file("extdata","/fs6/fsaverage6_cifti_template.dscalar.nii", package = "ssbrain")
   }
 
-  if (grepl("dscalar",cifti_filename)) {
+  cifti_basename = basename(cifti_filename)
+
+  if (grepl("dscalar",cifti_basename)) {
     filetype="dscalar"
-  } else if (grepl("dlabel", cifti_filename)) {
+  } else if (grepl("dlabel", cifti_basename)) {
     filetype="dlabel"
-  } else if (grepl("border", cifti_filename)) {
+  } else if (grepl("border", cifti_basename)) {
     filetype="border"
   } else {
     stop("`cifti_filename` must end in either `.dscalar.nii`, `.dlabel.nii`, or `.border`")
@@ -161,7 +163,6 @@ exportCifti = function(cifti_filename, data, luttpath) {
          set_wbpath('/path/to/wb')")
   }
 
-  cifti_basename = basename(cifti_filename)
   cifti_basename_noext = tools::file_path_sans_ext(cifti_basename)
   cifti_basename_noext = tools::file_path_sans_ext(cifti_basename_noext) # has to be done twice, because CIFTIs have two extensions (e.g. .dscalar.nii)
 
