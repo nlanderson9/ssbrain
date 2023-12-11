@@ -182,9 +182,11 @@ exportCifti = function(cifti_filename, data, luttpath) {
 
 
   template = importCifti(template)
-  template$data_info$Dim0 = template$data_info$Dim0/2
-  template$data_info$n = template$data_info$n/2
   template$data_info$Encoding = "Base64Binary"
+  if (mesh != "cerebellum_flatmap") {
+    template$data_info$Dim0 = template$data_info$Dim0/2
+    template$data_info$n = template$data_info$n/2
+  }
   template_l = template
   template_l$data$normal = data[1:template$data_info$Dim0]
   writegii(template_l, gifti_name_l)
