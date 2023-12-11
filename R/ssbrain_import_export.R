@@ -137,8 +137,13 @@ exportCifti = function(cifti_filename, data, luttpath) {
     template=system.file("extdata","/fs5/fsaverage5_cifti_template.dscalar.nii", package = "ssbrain")
     surf_l=system.file("extdata","/fs5/lh.pial_infl2.surf.gii", package = "ssbrain")
     surf_r=system.file("extdata","/fs5/rh.pial_infl2.surf.gii", package = "ssbrain")
+  } else if (length(data) == 28935) {
+    mesh='cerebellum_flatmap'
+    template=system.file("extdata","/cerebellum_flat/cerebellum_template.dscalar.nii", package = "ssbrain")
+    surf_l=system.file("extdata","/cerebellum_flat/FLAT.surf.gii", package = "ssbrain")
+    surf_r=system.file("extdata","/cerebellum_flat/FLAT.surf.gii", package = "ssbrain")
   } else {
-    warning("This function formally supports `fsaverage6` and `fsaverage`. Your `data` argument does not contain 81924 or 327684 vertices; proceed with caution.")
+    warning("This function formally supports `fsaverage5/6/7` and `SUIT` cerebellar flatmaps. Your `data` argument does not contain the correct number of vertices; proceed with caution.")
     template=system.file("extdata","/fs6/fsaverage6_cifti_template.dscalar.nii", package = "ssbrain")
   }
 
@@ -181,16 +186,19 @@ exportCifti = function(cifti_filename, data, luttpath) {
   template$data_info$n = template$data_info$n/2
   template$data_info$Encoding = "Base64Binary"
   template_l = template
-  template_r = template
   template_l$data$normal = data[1:template$data_info$Dim0]
-  template_r$data$normal = data[(template$data_info$Dim0+1):(template$data_info$Dim0*2)]
-
-
   writegii(template_l, gifti_name_l)
-  writegii(template_r, gifti_name_r)
-  system(paste0(getOption("ssbrain_wbpath"), " -cifti-create-dense-scalar ",dscalar_name," -left-metric ",gifti_name_l," -right-metric ",gifti_name_r), intern=TRUE, ignore.stdout = TRUE)
+  if (mesh == "cerebellum_flatmap") {
+    system(paste0(getOption("ssbrain_wbpath"), " -cifti-create-dense-scalar ",dscalar_name," -cerebellum-metric ",gifti_name_l), intern=TRUE, ignore.stdout = TRUE)
+  } else {
+    template_r = template
+    template_r$data$normal = data[(template$data_info$Dim0+1):(template$data_info$Dim0*2)]
+    writegii(template_r, gifti_name_r)
+    system(paste0(getOption("ssbrain_wbpath"), " -cifti-create-dense-scalar ",dscalar_name," -left-metric ",gifti_name_l," -right-metric ",gifti_name_r), intern=TRUE, ignore.stdout = TRUE)
+    unlink(gifti_name_r)
+  }
   unlink(gifti_name_l)
-  unlink(gifti_name_r)
+
 
 
   if (filetype %in% c("dlabel", "border")) {
@@ -204,18 +212,29 @@ exportCifti = function(cifti_filename, data, luttpath) {
   }
 
   if (filetype == "border") {
-    label_name_l = file.path(cifti_dirname, paste0(cifti_basename_noext, "_lh.label.gii"))
-    label_name_r = file.path(cifti_dirname, paste0(cifti_basename_noext, "_rh.label.gii"))
-    border_name_l = file.path(cifti_dirname, paste0(cifti_basename_noext, "_lh.border"))
-    border_name_r = file.path(cifti_dirname, paste0(cifti_basename_noext, "_rh.border"))
 
-    system(paste0(getOption("ssbrain_wbpath"), " -cifti-separate ",dlabel_name," COLUMN -label CORTEX_LEFT ",label_name_l," -label CORTEX_RIGHT ",label_name_r));
-    system(paste0(getOption("ssbrain_wbpath"), " -label-to-border ",surf_l," ",label_name_l," ",border_name_l," -placement 0.5"));
-    system(paste0(getOption("ssbrain_wbpath"), " -label-to-border ",surf_r," ",label_name_r," ",border_name_r," -placement 0.5"));
+    if (mesh == "cerebellum_flatmap") {
+      label_name = file.path(cifti_dirname, paste0(cifti_basename_noext, ".label.gii"))
+      border_name = file.path(cifti_dirname, paste0(cifti_basename_noext, ".border"))
+    } else {
+      label_name_l = file.path(cifti_dirname, paste0(cifti_basename_noext, "_lh.label.gii"))
+      label_name_r = file.path(cifti_dirname, paste0(cifti_basename_noext, "_rh.label.gii"))
+      border_name_l = file.path(cifti_dirname, paste0(cifti_basename_noext, "_lh.border"))
+      border_name_r = file.path(cifti_dirname, paste0(cifti_basename_noext, "_rh.border"))
+    }
+
+    if (mesh == "cerebellum_flatmap") {
+      system(paste0(getOption("ssbrain_wbpath"), " -cifti-separate ",dlabel_name," COLUMN -label CEREBELLUM ",label_name));
+      system(paste0(getOption("ssbrain_wbpath"), " -label-to-border ",surf_l," ",label_name," ",border_name," -placement 0.5"));
+    } else {
+      system(paste0(getOption("ssbrain_wbpath"), " -cifti-separate ",dlabel_name," COLUMN -label CORTEX_LEFT ",label_name_l," -label CORTEX_RIGHT ",label_name_r));
+      system(paste0(getOption("ssbrain_wbpath"), " -label-to-border ",surf_l," ",label_name_l," ",border_name_l," -placement 0.5"));
+      system(paste0(getOption("ssbrain_wbpath"), " -label-to-border ",surf_r," ",label_name_r," ",border_name_r," -placement 0.5"));
+      unlink(label_name_r)
+    }
 
     unlink(dlabel_name)
     unlink(label_name_l)
-    unlink(label_name_r)
   }
 }
 
