@@ -120,7 +120,7 @@ importCifti = function(cifti_name, data_only=FALSE) {
 #' For border files, outputs should be named filename.border. These will automatically be changed into left/right hemisphere files called filename_lh.border and filename_rh.border
 
 
-exportCifti = function(cifti_filename, data, luttpath) {
+exportCifti = function(cifti_filename, data, luttpath, surf_l, surf_r, template) {
   data = data %>% replace_na(0)
   if (length(data) == 81924) {
     mesh='fsaverage6'
@@ -144,7 +144,10 @@ exportCifti = function(cifti_filename, data, luttpath) {
     surf_r=system.file("extdata","/cerebellum_flat/FLAT.surf.gii", package = "ssbrain")
   } else {
     warning("This function formally supports `fsaverage5/6/7` and `SUIT` cerebellar flatmaps. Your `data` argument does not contain the correct number of vertices; proceed with caution.")
-    template=system.file("extdata","/fs6/fsaverage6_cifti_template.dscalar.nii", package = "ssbrain")
+    if(missing(template) | missing(surf_l) | missing(surf_r)) {
+      stop("Because your data does not contain a recognized vertex count, you need to provide a left surface file (`surf_l`), a right surface file (`surf_r`) and a template dscalar in the correct space (`template`).")
+    }
+    mesh="other"
   }
 
   cifti_basename = basename(cifti_filename)
