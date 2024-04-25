@@ -290,7 +290,7 @@ add_dconn = function(obj1, obj2) {
   if (!is.null(colorbar)) {
     color_data = colorbarGenerator(colorbar_name = colorbar)
   } else {
-    color_data = colorbarGenerator(pos_colorpalette = palette)
+    color_data = colorbarGenerator(pos_palette = palette)
   }
 
 
