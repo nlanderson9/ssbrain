@@ -68,7 +68,7 @@ ss_dscalar = function(filename,
     stop("ERROR in `ss_dscalar`: You must provide a dscalar filename.")
   }
   if (!missing(filename) & !missing(dscalar_data)) {
-    stop("Warning for `ss_dscalar`: You've provided both a dscalar filename and dscalar data; the dscalar data will override the dscalar file.")
+    warning("Warning for `ss_dscalar`: You've provided both a dscalar filename and dscalar data; the dscalar data will override the dscalar file.")
   }
 
   if(missing(filename)) {

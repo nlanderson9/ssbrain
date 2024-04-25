@@ -58,7 +58,7 @@ ss_seed = function(filename,
     stop("ERROR in `ss_seed`: You must provide a dconn filename (`filename`) or dconn-style data (`seed_data`).")
   }
   if (!missing(filename) & !missing(seed_data)) {
-    stop("Warning for `ss_seed`: You've provided both a dconn filename and seed data; the seed data will override the dconn file.")
+    warning("Warning for `ss_seed`: You've provided both a dconn filename and seed data; the seed data will override the dconn file.")
   }
 
   if(missing(filename)) {
