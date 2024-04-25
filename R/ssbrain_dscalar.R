@@ -323,11 +323,11 @@ add_dscalar = function(obj1, obj2){
   if (!is.null(colorbar)) {
     color_data = colorbarGenerator(colorbar_name = colorbar)
   } else if (!is.null(pos_palette) & is.null(neg_palette)) {
-    color_data = colorbarGenerator(pos_colorpalette = pos_palette)
+    color_data = colorbarGenerator(pos_palette = pos_palette)
   } else if (is.null(pos_palette) & !is.null(neg_palette)) {
-    color_data = colorbarGenerator(neg_colorpalette = neg_palette)
+    color_data = colorbarGenerator(neg_palette = neg_palette)
   } else if (!is.null(pos_palette) & !is.null(neg_palette)) {
-    color_data = colorbarGenerator(pos_colorpalette = pos_palette, neg_colorpalette = neg_palette)
+    color_data = colorbarGenerator(pos_palette = pos_palette, neg_palette = neg_palette)
   }
 
   neg_low = color_data$neg_low
