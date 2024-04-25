@@ -103,12 +103,12 @@ createOutputList = function(colorbar_name, pos_list, neg_list) {
 #' @description Given a name or color palette(s), generate the necessary information to use them in brain maps
 #'
 #' @param colorbar_name A string with the name of the color bar
-#' @param neg_colorpalette (Optional argument) A custom color palette created by colorRampPalette, to be used for negative values
-#' @param pos_colorpalette (Optional argument) A custom color palette created by colorRampPalette, to be used for positive values
+#' @param neg_palette (Optional argument) A custom color palette created by colorRampPalette, to be used for negative values
+#' @param pos_palette (Optional argument) A custom color palette created by colorRampPalette, to be used for positive values
 #'
 #' @import grDevices
 
-colorbarGenerator = function(colorbar_name, neg_colorpalette, pos_colorpalette) {
+colorbarGenerator = function(colorbar_name, neg_palette, pos_palette) {
   if (!missing(colorbar_name)) {
     if (colorbar_name == "ROY-BIG-BL") {
       pos_color_order_list = list(c(0,0,0),
