@@ -230,14 +230,14 @@ CIVIDIS")
   }
 
   if (!missing(pos_palette)) {
-    if (!is.function(pos_palette)) {
+    if (!is.function(pos_palette) & !is.null(pos_palette)) {
       stop("ERROR in `dscalar: The `pos_palette` argument must be a palette function created by colorRampPalette().")
     }
   } else {
     pos_palette = NULL
   }
   if (!missing(neg_palette)) {
-    if (!is.function(neg_palette)) {
+    if (!is.function(neg_palette) & !is.null(pos_palette)) {
       stop("ERROR in `dscalar: The `neg_palette` argument must be a palette function created by colorRampPalette().")
     }
   } else {
