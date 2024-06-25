@@ -19,6 +19,7 @@ Imports:
     tidyr,
     viridisLite,
     xml2,
-    pracma
+    pracma,
+    scales
 Depends: 
     R (>= 4.1.1)

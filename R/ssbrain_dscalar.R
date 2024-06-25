@@ -29,6 +29,7 @@ checkBin = function(x, y) {
 #' @param neg_thresh The option above which to hide negative data. Defaults to NULL (no threshold).
 #' @param pos_colorrange The positive range in which to spread the \code{colorbar}'s colors. Defaults to NULL (full data range).
 #' @param neg_colorrange The negative range in which to spread the \code{colorbar}'s colors. Defaults to NULL (full data range).
+#' @param alpha The alpha (transparency) value for the displayed data. Ranges between 0 (transparent) and 1 (opaque). Defaults to 1.
 #' @param dscalar_data (Optional argument) Rather than passing a dscalar file, you can directly pass in an R vector containing the data. This overrides \code{filename}.
 #' @param pos_palette (Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for positive colors.
 #' @param neg_palette (Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for negative colors.
@@ -60,6 +61,7 @@ ss_dscalar = function(filename,
                    neg_thresh = NULL,
                    pos_colorrange = NULL,
                    neg_colorrange = NULL,
+                   alpha = 1,
                    dscalar_data,
                    pos_palette,
                    neg_palette) {
@@ -225,20 +227,28 @@ CIVIDIS")
     }
   }
 
+  if(!is.numeric(alpha)) {
+    stop("ERROR in `ss_dscalar`: The `alpha` argument must be a number between 0 and 1.")
+  }
+
+  if(alpha > 1 | alpha < 0) {
+    stop("ERROR in `ss_dscalar`: The `alpha` argument must be a number between 0 and 1.")
+  }
+
   if (missing(dscalar_data)) {
     dscalar_data = NULL
   }
 
   if (!missing(pos_palette)) {
     if (!is.function(pos_palette) & !is.null(pos_palette)) {
-      stop("ERROR in `dscalar: The `pos_palette` argument must be a palette function created by colorRampPalette().")
+      stop("ERROR in `ss_dscalar: The `pos_palette` argument must be a palette function created by colorRampPalette().")
     }
   } else {
     pos_palette = NULL
   }
   if (!missing(neg_palette)) {
     if (!is.function(neg_palette) & !is.null(pos_palette)) {
-      stop("ERROR in `dscalar: The `neg_palette` argument must be a palette function created by colorRampPalette().")
+      stop("ERROR in `ss_dscalar: The `neg_palette` argument must be a palette function created by colorRampPalette().")
     }
   } else {
     neg_palette = NULL
@@ -251,6 +261,7 @@ CIVIDIS")
                 neg_thresh = neg_thresh,
                 pos_colorrange = pos_colorrange,
                 neg_colorrange = neg_colorrange,
+                alpha = alpha,
                 dscalar_data = dscalar_data,
                 pos_palette = pos_palette,
                 neg_palette = neg_palette)
@@ -293,6 +304,7 @@ add_dscalar = function(obj1, obj2){
   neg_thresh = obj2$neg_thresh
   pos_colorrange = obj2$pos_colorrange
   neg_colorrange = obj2$neg_colorrange
+  alpha = obj2$alpha
   dscalar_data = obj2$dscalar_data
   pos_palette = obj2$pos_palette
   neg_palette = obj2$neg_palette
@@ -472,6 +484,9 @@ add_dscalar = function(obj1, obj2){
 
   pos_colors = pos_palette(num_poscolors)
   neg_colors = neg_palette(num_negcolors)
+
+  pos_colors = alpha(pos_colors, alpha)
+  neg_colors = alpha(neg_colors, alpha)
 
   allcolors = c("#D3D3D3", rep(neg_high, num_neg_lowcolors), neg_colors, rep(neg_low, num_neg_highcolors), rep(pos_low, num_pos_lowcolors), pos_colors, rep(pos_high, num_pos_highcolors))
 
