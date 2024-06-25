@@ -184,7 +184,11 @@ add_border = function(obj1, obj2) {
 
   xml_border = read_xml(filename)
   border_info = xml_children(xml_border)
-  border_data = xml_children(border_info[2]) # here, 2 is the data
+  if (length(border_info) > 1) {
+    border_data = xml_children(border_info[2]) # here, 2 is the data
+  } else {
+    border_data = xml_children(border_info[1])
+  }
   if (is.numeric(borders)) {
     if(any(borders > length(border_data))) {
       stop("ERROR in `ss_border`: You have provided border numbers in the argument `borders` that exceed the number of borders in the provided file.")
