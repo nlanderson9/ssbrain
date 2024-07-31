@@ -329,7 +329,7 @@ add_dconn = function(obj1, obj2) {
   allcolors = c("#D3D3D3", rep(low, num_lowcolors), palette_colors, rep(high, num_highcolors))
 
   colors = allcolors[binlist]
-
+  print(size(all_data))
   below_thresh = which(all_data < thresh)
   colors[below_thresh] = "#D3D3D3"
 
