@@ -305,7 +305,7 @@ add_dconn = function(obj1, obj2) {
   if (is.null(seed_data)) {
     all_data = dconn_data$data$normal
   } else {
-    all_data = seed_data
+    all_data = seed_data[seed_value,]
   }
   pos_indices = which(all_data>0)
 
