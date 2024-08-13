@@ -351,7 +351,7 @@ add_dscalar = function(obj1, obj2){
     if (length(all_data[all_data<0]) > 0) {
       neg_thresh = max(all_data[all_data<0])
     } else {
-      neg_thres = 0
+      neg_thresh = 0
     }
   }
   if (is.null(pos_colorrange)) {
