@@ -71,7 +71,7 @@ rgb_fun1 = function(x) {
 #' @import grDevices
 #' @import viridisLite
 
-createOutputList = function(colorbar_name, pos_list, neg_list, full_palette) {
+createOutputList = function(colorbar_name, pos_list=NULL, neg_list=NULL, full_palette=NULL) {
 
   if (colorbar_name %in% c("TURBO", "VIRIDIS", "INFERNO", "MAGMA", "PLASMA", "ROCKET", "MAKO", "CIVIDIS")) {
     pos_color_order = viridis(n=100, option = tolower(colorbar_name))
