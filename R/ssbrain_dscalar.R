@@ -32,6 +32,7 @@ checkBin = function(x, y) {
 #' @param dscalar_data (Optional argument) Rather than passing a dscalar file, you can directly pass in an R vector containing the data. This overrides \code{filename}.
 #' @param pos_palette (Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for positive colors.
 #' @param neg_palette (Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for negative colors.
+#' @param full_palette (Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for the full range of colors.
 #'
 #' @export
 #'
@@ -62,7 +63,8 @@ ss_dscalar = function(filename,
                    neg_colorrange = NULL,
                    dscalar_data,
                    pos_palette,
-                   neg_palette) {
+                   neg_palette,
+                   full_palette) {
 
   if (missing(filename) & missing(dscalar_data)) {
     stop("ERROR in `ss_dscalar`: You must provide a dscalar filename.")
@@ -243,6 +245,13 @@ CIVIDIS")
   } else {
     neg_palette = NULL
   }
+  if (!missing(full_palette)) {
+    if (!is.function(full_palette) & !is.null(full_palette)) {
+      stop("ERROR in `ss_dscalar: The `full_palette` argument must be a palette function created by colorRampPalette().")
+    }
+  } else {
+    full_palette = NULL
+  }
 
   output = list(filename = filename,
                 colorbar = colorbar,
@@ -253,7 +262,8 @@ CIVIDIS")
                 neg_colorrange = neg_colorrange,
                 dscalar_data = dscalar_data,
                 pos_palette = pos_palette,
-                neg_palette = neg_palette)
+                neg_palette = neg_palette,
+                full_palette = full_palette)
   class(output) = c("ssbrain", "dscalar")
   return(output)
 }
@@ -296,6 +306,7 @@ add_dscalar = function(obj1, obj2){
   dscalar_data = obj2$dscalar_data
   pos_palette = obj2$pos_palette
   neg_palette = obj2$neg_palette
+  full_palette = obj2$full_palette
 
   if (is.null(dscalar_data)) {
     dscalar_data = importCifti(filename)
@@ -316,12 +327,14 @@ add_dscalar = function(obj1, obj2){
   }
 
 
-  if (!is.null(pos_palette) | !is.null(neg_palette)) {
+  if (!is.null(pos_palette) | !is.null(neg_palette) | !is.null(full_palette)) {
     colorbar = NULL
   }
 
   if (!is.null(colorbar)) {
     color_data = colorbarGenerator(colorbar_name = colorbar)
+  } else if (!is.null(full_palette)) {
+    color_data = colorbarGenerator(colorbar_name = "full_palette", full_palette = full_palette)
   } else if (!is.null(pos_palette) & is.null(neg_palette)) {
     color_data = colorbarGenerator(pos_palette = pos_palette)
   } else if (is.null(pos_palette) & !is.null(neg_palette)) {

@@ -71,7 +71,7 @@ rgb_fun1 = function(x) {
 #' @import grDevices
 #' @import viridisLite
 
-createOutputList = function(colorbar_name, pos_list, neg_list) {
+createOutputList = function(colorbar_name, pos_list, neg_list, full_palette) {
 
   if (colorbar_name %in% c("TURBO", "VIRIDIS", "INFERNO", "MAGMA", "PLASMA", "ROCKET", "MAKO", "CIVIDIS")) {
     pos_color_order = viridis(n=100, option = tolower(colorbar_name))
@@ -81,6 +81,15 @@ createOutputList = function(colorbar_name, pos_list, neg_list) {
     neg_high = neg_color_order[length(neg_color_order)]
     pos_low = pos_color_order[1]
     pos_high = pos_color_order[length(pos_color_order)]
+  } else if (colorbar_name == "full_palette") {
+    pos_color_order = full_palette
+    neg_color_order = c(pos_color_order[1], pos_color_order[1])
+
+    neg_low = neg_color_order[1]
+    neg_high = neg_color_order[length(neg_color_order)]
+    pos_low = pos_color_order[1]
+    pos_high = pos_color_order[length(pos_color_order)]
+
   } else {
     neg_color_order = unlist(lapply(neg_list, rgb_fun1))
     # neg_color_order = rev(neg_color_order)
@@ -108,7 +117,7 @@ createOutputList = function(colorbar_name, pos_list, neg_list) {
 #'
 #' @import grDevices
 
-colorbarGenerator = function(colorbar_name, neg_palette, pos_palette) {
+colorbarGenerator = function(colorbar_name, neg_palette, pos_palette, full_palette) {
   if (!missing(colorbar_name)) {
     if (colorbar_name == "ROY-BIG-BL") {
       pos_color_order_list = list(c(0,0,0),
@@ -458,6 +467,8 @@ colorbarGenerator = function(colorbar_name, neg_palette, pos_palette) {
 
     output_list = createOutputList(colorbar_name, pos_color_order_list, neg_color_order_list)
     return(output_list)
+  } else if (!missing(full_palette)) {
+    output_list = createOutputList(colorbar_name, full_palette=full_palette(100))
   } else {
     if (missing(neg_palette)) {
       pos_palette_colors = pos_palette(100)
