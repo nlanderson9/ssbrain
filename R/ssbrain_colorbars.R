@@ -492,8 +492,8 @@ colorbarGenerator = function(colorbar_name, neg_palette, pos_palette, full_palet
       pos_high = pos_palette_colors[length(pos_palette_colors)]
 
       neg_palette_colors = neg_palette(100)
-      neg_low = neg_palette_colors[1]
-      neg_high = neg_palette_colors[length(neg_palette_colors)]
+      neg_low = neg_palette_colors[length(neg_palette_colors)]
+      neg_high = neg_palette_colors[1]
     }
 
     return(list(neg_low=neg_low, neg_high=neg_high, pos_low=pos_low, pos_high=pos_high, neg_palette=neg_palette, pos_palette=pos_palette))
