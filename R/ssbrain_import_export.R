@@ -62,7 +62,7 @@ importSurface = function(surface_name) {
 
 importCifti = function(cifti_name, data_only=FALSE) {
   stopifnot("`cifti_name` provided does not exist" = file.exists(cifti_name))
-  stopifnot("`cifti_name` doesn't have a valid CIFTI file extension (.dscalar.nii, .dlabel.nii, or .dconn.nii" = grepl("\\.dscalar\\.nii$|\\.dlabel\\.nii$|\\.dconn\\.nii$", cifti_name))
+  stopifnot("`cifti_name` doesn't have a valid CIFTI file extension (.dscalar.nii, .dlabel.nii, .dconn.nii, or .dtseries.nii" = grepl("\\.dscalar\\.nii$|\\.dlabel\\.nii$|\\.dconn\\.nii$|\\.dtseries\\.nii$", cifti_name))
   cifti_basename = basename(cifti_name)
   cifti_basename_noext = tools::file_path_sans_ext(cifti_basename)
 
