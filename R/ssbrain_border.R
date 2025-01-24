@@ -254,6 +254,14 @@ add_border = function(obj1, obj2) {
       vertex_matrix = t(do.call(rbind, split_vertices))
       vertex_matrix = vertex_matrix + 1 # border files use vertices, not row numbers
 
+      vertex_matrix_ncol = ncol(vertex_matrix)
+      overlap = intersect(vertex_matrix[,1], vertex_matrix[,vertex_matrix_ncol])
+      if (length(overlap) > 0) {
+        connect_final = TRUE
+      } else {
+        connect_final = FALSE
+      }
+
       if (offset == .1 & !is.null(obj1$surf_info$border_vertices[[hemisphere]])) {
         border_vertices = apply(vertex_matrix, 2, function(x) as.matrix(c(rowMeans(obj1$surf_info$border_vertices[[hemisphere]][,x]),1)))
       } else if (offset == 0) {
@@ -292,11 +300,17 @@ add_border = function(obj1, obj2) {
 
       }
 
-
-      border_indices = as.matrix(rbind(
-        start_vertex:(start_vertex + ncol(vertex_matrix) - 1),
-        c((start_vertex+1):(start_vertex + ncol(vertex_matrix) - 1),start_vertex)
-      ))
+      if (connect_final) {
+        border_indices = as.matrix(rbind(
+          start_vertex:(start_vertex + ncol(vertex_matrix) - 1),
+          c((start_vertex+1):(start_vertex + ncol(vertex_matrix) - 1),start_vertex)
+        ))
+      } else {
+        border_indices = as.matrix(rbind(
+          start_vertex:(start_vertex + ncol(vertex_matrix) - 2),
+          (start_vertex+1):(start_vertex + ncol(vertex_matrix) - 1)
+        ))
+      }
 
       start_vertex = start_vertex + ncol(vertex_matrix)
 
