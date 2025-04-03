@@ -4,14 +4,14 @@
 \alias{colorbarGenerator}
 \title{Generate Color Bar}
 \usage{
-colorbarGenerator(colorbar_name, neg_colorpalette, pos_colorpalette)
+colorbarGenerator(colorbar_name, neg_palette, pos_palette, full_palette)
 }
 \arguments{
 \item{colorbar_name}{A string with the name of the color bar}
 
-\item{neg_colorpalette}{(Optional argument) A custom color palette created by colorRampPalette, to be used for negative values}
+\item{neg_palette}{(Optional argument) A custom color palette created by colorRampPalette, to be used for negative values}
 
-\item{pos_colorpalette}{(Optional argument) A custom color palette created by colorRampPalette, to be used for positive values}
+\item{pos_palette}{(Optional argument) A custom color palette created by colorRampPalette, to be used for positive values}
 }
 \description{
 Given a name or color palette(s), generate the necessary information to use them in brain maps

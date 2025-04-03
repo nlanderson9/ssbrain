@@ -14,7 +14,8 @@ ss_dscalar(
   neg_colorrange = NULL,
   dscalar_data,
   pos_palette,
-  neg_palette
+  neg_palette,
+  full_palette
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ ss_dscalar(
 \item{pos_palette}{(Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for positive colors.}
 
 \item{neg_palette}{(Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for negative colors.}
+
+\item{full_palette}{(Experimental) A color palette created by \code{colorRampPalette}; overrides \code{colorbar} for the full range of colors.}
 }
 \description{
 This function sets a dscalar data file on the surface of the brain

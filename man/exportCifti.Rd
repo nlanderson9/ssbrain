@@ -4,7 +4,7 @@
 \alias{exportCifti}
 \title{Export a CIFTI Data File or Border File}
 \usage{
-exportCifti(cifti_filename, data, luttpath)
+exportCifti(cifti_filename, data, luttpath, surf_l, surf_r, template)
 }
 \arguments{
 \item{cifti_filename}{A string with the full path to the CIFTI data file you'd like to create}

@@ -219,6 +219,7 @@ showBrain = function(brain,
 #' @param ambient_color The color to use for the brain surface. Default is "gray12".
 #' @param crop Whether or not to crop the resulting image. Default is TRUE.
 #' @param cropmargin The margin of whitespace to leave around the brain when cropping. Default is 10.
+#' @param webshot Whether webshot should be used to capture a screenshot. Default is FALSE.
 #'
 #' @import rgl
 #'
@@ -240,17 +241,10 @@ captureBrain = function(brain,
                         zoom=.6,
                         crop=TRUE,
                         cropmargin=10,
-                        ambient_color = "gray12") {
+                        ambient_color = "gray12",
+                        webshot=FALSE) {
   showBrain(brain,hemisphere, width, height, zoom, ambient_color)
-  snapshot3d(filename, width=width, height=height,webshot=FALSE)
-  # save_info = suppressWarnings(rglwidget(snapshot=TRUE))
-  # temp_path = save_info[1]
-  # file.copy(temp_path, filename)
-  # unlink(temp_path)
-
-
-  # rgl.postscript(paste0(filename,".svg"), fmt="svg")
-  # rsvg_png(paste0(filename,".svg"), filename, width=pixwidth, height=pixheight)
+  snapshot3d(filename, width=width, height=height,webshot=webshot)
 
   if (crop) {
     img = magick::image_read(filename)

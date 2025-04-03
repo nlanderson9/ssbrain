@@ -10,7 +10,7 @@ ss_border(
   borders = NULL,
   width = 5,
   colors = NULL,
-  offset = TRUE
+  offset = 0.1
 )
 }
 \arguments{

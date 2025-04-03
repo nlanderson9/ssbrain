@@ -4,7 +4,14 @@
 \alias{showBrain}
 \title{Visually Display Brain Surface}
 \usage{
-showBrain(brain, hemisphere, width = 800, height = 500)
+showBrain(
+  brain,
+  hemisphere,
+  width = 800,
+  height = 500,
+  zoom = 0.6,
+  ambient_color = "gray12"
+)
 }
 \arguments{
 \item{brain}{An \code{ssbrain} object created by \link{ss_surf} (and potentially modified by other functions)}
@@ -14,6 +21,10 @@ showBrain(brain, hemisphere, width = 800, height = 500)
 \item{width}{The width of the window. Default is 800.}
 
 \item{height}{The height of the window. Default is 500.}
+
+\item{zoom}{The zoom level for the display. Default is .6.}
+
+\item{ambient_color}{The color to use for the brain surface. Default is "gray12".}
 }
 \description{
 This function opens an rgl window and displays a brain surface.

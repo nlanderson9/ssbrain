@@ -10,8 +10,11 @@ captureBrain(
   filename,
   width = 800,
   height = 500,
+  zoom = 0.6,
   crop = TRUE,
-  cropmargin = 10
+  cropmargin = 10,
+  ambient_color = "gray12",
+  webshot = FALSE
 )
 }
 \arguments{
@@ -25,9 +28,15 @@ captureBrain(
 
 \item{height}{The height of the window. Default is 500.}
 
+\item{zoom}{The zoom level for the display. Default is .6.}
+
 \item{crop}{Whether or not to crop the resulting image. Default is TRUE.}
 
 \item{cropmargin}{The margin of whitespace to leave around the brain when cropping. Default is 10.}
+
+\item{ambient_color}{The color to use for the brain surface. Default is "gray12".}
+
+\item{webshot}{Whether webshot should be used to capture a screenshot. Default is FALSE.}
 }
 \description{
 This function opens an rgl window and displays a brain surface, then saves a screenshot of it.

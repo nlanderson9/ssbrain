@@ -4,7 +4,12 @@
 \alias{createOutputList}
 \title{Create Color Maps}
 \usage{
-createOutputList(colorbar_name, pos_list, neg_list)
+createOutputList(
+  colorbar_name,
+  pos_list = NULL,
+  neg_list = NULL,
+  full_palette = NULL
+)
 }
 \arguments{
 \item{colorbar_name}{A string with the name of the color bar}

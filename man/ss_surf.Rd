@@ -4,7 +4,13 @@
 \alias{ss_surf}
 \title{Set a Surface Mesh}
 \usage{
-ss_surf(surf = NULL, surfL = NULL, surfR = NULL)
+ss_surf(
+  surf = NULL,
+  surfL = NULL,
+  surfR = NULL,
+  showMedialWall = TRUE,
+  medialWallColor = "#858585"
+)
 }
 \arguments{
 \item{surf}{A string with the surface mesh you wish to use. Options are "fsaverage6" and "fsaverage7".}
